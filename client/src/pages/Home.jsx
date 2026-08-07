@@ -7,8 +7,7 @@ export default function Home() {
         <>
             <Hero />
             <Categories />
-            <FeaturedProducts />
-            
+            <FeaturedProducts />  
         </>
 
     );
