@@ -25,7 +25,13 @@ const uploadToCloudinary = async (filePath) => {
 // GET /api/v1/products
 export const getAllProducts = async (req, res) => {
   try {
-    const { category, search } = req.query;
+    const {
+      category,
+      search,
+      page = 1,
+      limit = 8,
+      sort = "newest",
+    } = req.query;
 
     const filter = {
       isActive: true,
@@ -36,20 +42,68 @@ export const getAllProducts = async (req, res) => {
     }
 
     if (search) {
-      filter.name = {
-        $regex: search,
-        $options: "i",
-      };
+      filter.$or = [
+        {
+          name: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          description: {
+            $regex: search,
+            $options: "i",
+          },
+        },
+      ];
     }
 
-    const products = await Product.find(filter).sort({
+    let sortOption = {
       createdAt: -1,
-    });
+    };
+
+    switch (sort) {
+      case "oldest":
+        sortOption = { createdAt: 1 };
+        break;
+
+      case "price_low":
+        sortOption = { price: 1 };
+        break;
+
+      case "price_high":
+        sortOption = { price: -1 };
+        break;
+
+      case "rating":
+        sortOption = { rating: -1 };
+        break;
+
+      default:
+        sortOption = { createdAt: -1 };
+    }
+
+    const currentPage = Number(page);
+    const pageLimit = Number(limit);
+
+    const totalProducts = await Product.countDocuments(filter);
+
+    const products = await Product.find(filter)
+      .sort(sortOption)
+      .skip((currentPage - 1) * pageLimit)
+      .limit(pageLimit);
 
     res.status(200).json({
       success: true,
-      count: products.length,
       products,
+      pagination: {
+        currentPage,
+        totalPages: Math.ceil(totalProducts / pageLimit),
+        totalProducts,
+        hasNextPage:
+          currentPage < Math.ceil(totalProducts / pageLimit),
+        hasPrevPage: currentPage > 1,
+      },
     });
   } catch (error) {
     res.status(500).json({

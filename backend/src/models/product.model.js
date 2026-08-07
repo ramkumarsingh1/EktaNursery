@@ -81,8 +81,12 @@ const productSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("Product", productSchema);
-// productSchema.index({ slug: 1 });
+productSchema.index({ slug: 1 });
 
-// productSchema.index({ category: 1 });
+productSchema.index({ category: 1 });
 
-// productSchema.index({ isFeatured: 1 });
+productSchema.index({ isFeatured: 1 });
+productSchema.index({
+    name: "text",
+    description: "text",
+});
