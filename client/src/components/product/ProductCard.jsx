@@ -21,7 +21,7 @@ export default function ProductCard({
               product.images?.[0]?.url ||
               "https://placehold.co/600x600?text=No+Image"
             }
-            alt={name}
+            alt={product.name}
             className="h-60 w-full object-cover transition duration-500 group-hover:scale-110"
           />
 

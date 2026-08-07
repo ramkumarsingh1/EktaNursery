@@ -5,7 +5,7 @@ import Container from "../layout/Container";
 import ProductCard from "../product/ProductCard";
 import Button from "../ui/Button";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../redux/slice/cartSlice";
+import { addToCart } from "../../redux/slices/cartSlice";
 import { getAllProducts } from "../../api/productApi";
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([]);
