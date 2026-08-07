@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import products from "../data/products";
 import Container from "../components/layout/Container";
 import Button from "../components/ui/Button";
 import RelatedProducts from "../components/product/RelatedProducts";
