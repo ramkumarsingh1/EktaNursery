@@ -19,7 +19,7 @@ export default function Shop() {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const {data} = await getAllProducts();
+                const { data } = await getAllProducts();
                 console.log(data.products);
                 setProducts(data.products);
             } catch (error) {
@@ -31,6 +31,12 @@ export default function Shop() {
 
         fetchProducts();
     }, []);
+    const categories = [
+        "All",
+        ...new Set(
+            products.map((product) => product.category)
+        ),
+    ];
     const filteredProducts = (products || []).filter((product) => {
         const categoryMatch =
             selectedCategory === "All" ||
@@ -127,6 +133,7 @@ export default function Shop() {
 
                     <div className="hidden lg:block">
                         <FilterSidebar
+                            categories={categories}
                             selectedCategory={selectedCategory}
                             setSelectedCategory={setSelectedCategory}
                         />
@@ -159,6 +166,7 @@ export default function Shop() {
                                 </div>
 
                                 <FilterSidebar
+                                    categories={categories}
                                     selectedCategory={selectedCategory}
                                     setSelectedCategory={setSelectedCategory}
                                 />

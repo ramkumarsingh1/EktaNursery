@@ -19,27 +19,33 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["Plant", "Pot", "Fertilizer", "Seed"],
+      enum: [
+        "Indoor Plant",
+        "Outdoor Plant",
+        "Pot",
+        "Seed",
+        "Fertilizer",
+      ],
     },
 
     price: {
-  type: Number,
-  required: true,
-  min: 0,
-},
+      type: Number,
+      required: true,
+      min: 0,
+    },
 
     stock: {
-  type: Number,
-  default: 0,
-  min: 0,
-},
+      type: Number,
+      default: 0,
+      min: 0,
+    },
 
     rating: {
-  type: Number,
-  default: 0,
-  min: 0,
-  max: 5,
-},
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
 
     description: {
       type: String,
@@ -47,17 +53,17 @@ const productSchema = new mongoose.Schema(
     },
 
     images: [
-  {
-    url: {
-      type: String,
-      required: true,
-    },
-    public_id: {
-      type: String,
-      required: true,
-    },
-  },
-],
+      {
+        url: {
+          type: String,
+          required: true,
+        },
+        public_id: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
 
     specifications: {
       type: Map,
@@ -87,6 +93,6 @@ productSchema.index({ category: 1 });
 
 productSchema.index({ isFeatured: 1 });
 productSchema.index({
-    name: "text",
-    description: "text",
+  name: "text",
+  description: "text",
 });

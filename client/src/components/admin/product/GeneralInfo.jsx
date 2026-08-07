@@ -82,16 +82,24 @@ export default function GeneralInfo({
                     }
                     className="w-full rounded-xl border p-3"
                 >
-                    <option value="Plant">Plant</option>
+                    <option value="Indoor Plant">
+                        Indoor Plant
+                    </option>
 
-                    <option value="Pot">Pot</option>
+                    <option value="Outdoor Plant">
+                        Outdoor Plant
+                    </option>
 
-                    <option value="Fertilizer">
-                        Fertilizer
+                    <option value="Pot">
+                        Pot
                     </option>
 
                     <option value="Seed">
                         Seed
+                    </option>
+
+                    <option value="Fertilizer">
+                        Fertilizer
                     </option>
 
                 </select>
@@ -127,7 +135,7 @@ export default function GeneralInfo({
 
             </div>
 
-          
+
 
             {/* Description */}
 
