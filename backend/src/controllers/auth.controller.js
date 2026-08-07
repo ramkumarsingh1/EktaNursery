@@ -97,10 +97,12 @@ export const loginUser = async (req, res) => {
     );
 
     // Cookie Options
+    const isProduction = process.env.NODE_ENV === "production";
+
     const options = {
       httpOnly: true,
-      secure: false, // Production me true karenge
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     };
 
     return res
@@ -212,10 +214,12 @@ export const refreshAccessToken = async (req, res) => {
 
     await user.save({ validateBeforeSave: false });
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     const options = {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     };
 
     return res
