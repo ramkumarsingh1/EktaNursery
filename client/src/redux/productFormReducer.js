@@ -7,7 +7,11 @@ export const initialState = {
     price: "",
     stock: "",
 
+    rating: 0,
+
     isFeatured: false,
+
+    isActive: true,
 
     images: [],
 
@@ -40,13 +44,10 @@ export function productFormReducer(state, action) {
         case "REMOVE_IMAGE":
 
             return {
-
                 ...state,
-
                 images: state.images.filter(
                     (_, i) => i !== action.index
                 ),
-
             };
 
         case "ADD_SPEC":
@@ -91,6 +92,7 @@ export function productFormReducer(state, action) {
             };
 
         case "SET_PRODUCT":
+
             return {
                 ...state,
 
@@ -106,23 +108,27 @@ export function productFormReducer(state, action) {
 
                 stock: action.payload.stock || "",
 
-                isFeatured: action.payload.isFeatured || false,
+                rating: action.payload.rating ?? 0,
+
+                isFeatured: action.payload.isFeatured ?? false,
+
+                isActive: action.payload.isActive ?? true,
 
                 specifications:
                     action.payload.specifications &&
-                        Object.keys(action.payload.specifications).length > 0
+                    Object.keys(action.payload.specifications).length > 0
                         ? Object.entries(action.payload.specifications).map(
-                            ([key, value]) => ({
-                                key,
-                                value,
-                            })
-                        )
+                              ([key, value]) => ({
+                                  key,
+                                  value,
+                              })
+                          )
                         : [
-                            {
-                                key: "",
-                                value: "",
-                            },
-                        ],
+                              {
+                                  key: "",
+                                  value: "",
+                              },
+                          ],
 
                 // Existing images sirf preview ke liye
                 images: action.payload.images || [],

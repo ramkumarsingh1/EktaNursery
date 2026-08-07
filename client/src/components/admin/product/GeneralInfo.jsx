@@ -98,6 +98,66 @@ export default function GeneralInfo({
 
             </div>
 
+            {/* Rating */}
+
+            <div className="mb-5">
+
+                <label className="mb-2 block font-medium">
+                    Rating
+                </label>
+
+                <select
+                    value={state.rating}
+                    onChange={(e) =>
+                        dispatch({
+                            type: "UPDATE_FIELD",
+                            field: "rating",
+                            value: Number(e.target.value),
+                        })
+                    }
+                    className="w-full rounded-xl border p-3"
+                >
+                    <option value={0}>0 Star</option>
+                    <option value={1}>1 Star</option>
+                    <option value={2}>2 Star</option>
+                    <option value={3}>3 Star</option>
+                    <option value={4}>4 Star</option>
+                    <option value={5}>5 Star</option>
+                </select>
+
+            </div>
+
+            {/* Product Status */}
+
+            <div className="mb-5">
+
+                <label className="mb-2 block font-medium">
+                    Status
+                </label>
+
+                <select
+                    value={state.isActive.toString()}
+                    onChange={(e) =>
+                        dispatch({
+                            type: "UPDATE_FIELD",
+                            field: "isActive",
+                            value: e.target.value === "true",
+                        })
+                    }
+                    className="w-full rounded-xl border p-3"
+                >
+                    <option value="true">
+                        Active
+                    </option>
+
+                    <option value="false">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
             {/* Description */}
 
             <div>
