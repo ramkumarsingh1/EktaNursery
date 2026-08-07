@@ -43,6 +43,7 @@ export default function ProductForm({
 
             formData.append("isFeatured", state.isFeatured);
             formData.append("isActive",state.isActive);
+            formData.append("rating",state.rating)
             const specs = {};
 
             state.specifications.forEach((item) => {
