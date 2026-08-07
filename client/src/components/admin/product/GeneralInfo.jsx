@@ -127,36 +127,7 @@ export default function GeneralInfo({
 
             </div>
 
-            {/* Product Status */}
-
-            <div className="mb-5">
-
-                <label className="mb-2 block font-medium">
-                    Status
-                </label>
-
-                <select
-                    value={state.isActive.toString()}
-                    onChange={(e) =>
-                        dispatch({
-                            type: "UPDATE_FIELD",
-                            field: "isActive",
-                            value: e.target.value === "true",
-                        })
-                    }
-                    className="w-full rounded-xl border p-3"
-                >
-                    <option value="true">
-                        Active
-                    </option>
-
-                    <option value="false">
-                        Inactive
-                    </option>
-
-                </select>
-
-            </div>
+          
 
             {/* Description */}
 
