@@ -11,7 +11,7 @@ export default function PricingSection({
                 Pricing & Inventory
             </h2>
 
-            <div className="grid gap-5 md:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2">
 
                 {/* Price */}
 
@@ -61,31 +61,6 @@ export default function PricingSection({
 
                 </div>
 
-                {/* Rating */}
-
-                <div>
-
-                    <label className="mb-2 block font-medium">
-                        Rating
-                    </label>
-
-                    <input
-                        type="number"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        value={state.rating}
-                        onChange={(e) =>
-                            dispatch({
-                                type: "UPDATE_FIELD",
-                                field: "rating",
-                                value: e.target.value,
-                            })
-                        }
-                        className="w-full rounded-xl border p-3"
-                    />
-
-                </div>
 
             </div>
 
