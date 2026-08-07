@@ -92,7 +92,7 @@ export default function ProductForm({
         } catch (error) {
 
             console.error(error);
-
+            console.error("Server said:", error.response?.data);
             alert(
                 mode === "add"
                     ? "Failed to add product"
