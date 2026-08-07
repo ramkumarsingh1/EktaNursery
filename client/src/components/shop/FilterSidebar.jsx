@@ -1,5 +1,7 @@
 export default function FilterSidebar({
     categories,
+    categoryCounts,
+    totalProducts,
     selectedCategory,
     setSelectedCategory,
 }) {
@@ -13,20 +15,22 @@ export default function FilterSidebar({
             <div className="space-y-3">
 
                 {categories.map((category) => (
-
                     <button
                         key={category}
-                        onClick={() =>
-                            setSelectedCategory(category)
-                        }
-                        className={`w-full rounded-lg border px-4 py-2 text-left transition
-                        ${
-                            selectedCategory === category
+                        onClick={() => setSelectedCategory(category)}
+                        className={`w-full rounded-lg border px-4 py-2 transition flex items-center justify-between
+        ${selectedCategory === category
                                 ? "bg-green-700 text-white"
                                 : "hover:bg-green-100"
-                        }`}
+                            }`}
                     >
-                        {category}
+                        <span>{category}</span>
+
+                        <span className="text-sm opacity-80">
+                            {category === "All"
+                                ? totalProducts
+                                : categoryCounts[category]}
+                        </span>
                     </button>
 
                 ))}

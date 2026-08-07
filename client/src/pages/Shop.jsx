@@ -37,6 +37,10 @@ export default function Shop() {
             products.map((product) => product.category)
         ),
     ];
+    const categoryCounts = products.reduce((acc, product) => {
+        acc[product.category] = (acc[product.category] || 0) + 1;
+        return acc;
+    }, {});
     const filteredProducts = (products || []).filter((product) => {
         const categoryMatch =
             selectedCategory === "All" ||
@@ -134,6 +138,8 @@ export default function Shop() {
                     <div className="hidden lg:block">
                         <FilterSidebar
                             categories={categories}
+                            categoryCounts={categoryCounts}
+                            totalProducts={products.length}
                             selectedCategory={selectedCategory}
                             setSelectedCategory={setSelectedCategory}
                         />
@@ -167,6 +173,8 @@ export default function Shop() {
 
                                 <FilterSidebar
                                     categories={categories}
+                                    categoryCounts={categoryCounts}
+                                    totalProducts={products.length}
                                     selectedCategory={selectedCategory}
                                     setSelectedCategory={setSelectedCategory}
                                 />
