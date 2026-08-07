@@ -146,10 +146,12 @@ export const logoutUser = async (req, res) => {
       }
     );
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     const options = {
       httpOnly: true,
-      secure: false, // production me true
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     };
 
     return res
