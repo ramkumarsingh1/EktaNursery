@@ -118,7 +118,13 @@ export const createProduct = async (req, res) => {
   try {
     const { name, slug, category, price, description } = req.body;
 
-    if (!name || !slug || !category || !price || !description) {
+    if (
+      !name ||
+      !slug ||
+      !category ||
+      price === undefined ||
+      !description
+    ) {
       return res.status(400).json({
         success: false,
         message: "Please fill all required fields",
@@ -167,6 +173,19 @@ export const createProduct = async (req, res) => {
 
     const product = await Product.create({
       ...req.body,
+
+      price: Number(req.body.price),
+
+      stock: Number(req.body.stock),
+
+      rating: Number(req.body.rating),
+
+      isFeatured:
+        req.body.isFeatured === "true",
+
+      isActive:
+        req.body.isActive === "true",
+
       images: uploadedImages,
     });
 
@@ -225,7 +244,17 @@ export const updateProduct = async (req, res) => {
     if (req.body.specifications) {
       req.body.specifications = JSON.parse(req.body.specifications);
     }
+    req.body.price = Number(req.body.price);
 
+    req.body.stock = Number(req.body.stock);
+
+    req.body.rating = Number(req.body.rating);
+
+    req.body.isFeatured =
+      req.body.isFeatured === "true";
+
+    req.body.isActive =
+      req.body.isActive === "true";
     // Agar nayi image upload hui hai
     if (req.files && req.files.length > 0) {
       let uploadedImages = [];

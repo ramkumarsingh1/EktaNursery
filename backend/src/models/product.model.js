@@ -86,7 +86,6 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Product", productSchema);
 productSchema.index({ slug: 1 });
 
 productSchema.index({ category: 1 });
@@ -96,3 +95,4 @@ productSchema.index({
   name: "text",
   description: "text",
 });
+export default mongoose.model("Product", productSchema);
