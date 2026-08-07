@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "../api/productApi";
 export default function Shop() {
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [priceRange, setPriceRange] = useState("All");
     const [sortBy, setSortBy] = useState("default");
     const [searchParams, setSearchParams] = useSearchParams();
     const searchTerm = searchParams.get("search") || "";
@@ -42,6 +43,7 @@ export default function Shop() {
         return acc;
     }, {});
     const filteredProducts = (products || []).filter((product) => {
+
         const categoryMatch =
             selectedCategory === "All" ||
             product.category === selectedCategory;
@@ -51,7 +53,41 @@ export default function Shop() {
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase());
 
-        return categoryMatch && searchMatch;
+        let priceMatch = true;
+
+        switch (priceRange) {
+
+            case "0-500":
+                priceMatch = product.price <= 500;
+                break;
+
+            case "500-1000":
+                priceMatch =
+                    product.price > 500 &&
+                    product.price <= 1000;
+                break;
+
+            case "1000-5000":
+                priceMatch =
+                    product.price > 1000 &&
+                    product.price <= 5000;
+                break;
+
+            case "5000+":
+                priceMatch = product.price > 5000;
+                break;
+
+            default:
+                priceMatch = true;
+
+        }
+
+        return (
+            categoryMatch &&
+            searchMatch &&
+            priceMatch
+        );
+
     });
     const sortedProducts = [...filteredProducts];
 
@@ -142,6 +178,8 @@ export default function Shop() {
                             totalProducts={products.length}
                             selectedCategory={selectedCategory}
                             setSelectedCategory={setSelectedCategory}
+                            priceRange={priceRange}
+                            setPriceRange={setPriceRange}
                         />
                     </div>
 
@@ -177,6 +215,8 @@ export default function Shop() {
                                     totalProducts={products.length}
                                     selectedCategory={selectedCategory}
                                     setSelectedCategory={setSelectedCategory}
+                                    priceRange={priceRange}
+                                    setPriceRange={setPriceRange}
                                 />
 
                             </div>
