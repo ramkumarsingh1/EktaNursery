@@ -97,13 +97,11 @@ export const loginUser = async (req, res) => {
     );
 
     // Cookie Options
-    const isProduction = process.env.NODE_ENV === "production";
-
     const options = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-    };
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
 
     return res
       .status(200)
@@ -148,13 +146,11 @@ export const logoutUser = async (req, res) => {
       }
     );
 
-    const isProduction = process.env.NODE_ENV === "production";
-
     const options = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-    };
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
 
     return res
       .status(200)
@@ -214,13 +210,11 @@ export const refreshAccessToken = async (req, res) => {
 
     await user.save({ validateBeforeSave: false });
 
-    const isProduction = process.env.NODE_ENV === "production";
-
     const options = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-    };
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+};
 
     return res
       .status(200)

@@ -6,7 +6,7 @@ import productRoutes from "./routes/product.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 const app = express();
-
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
