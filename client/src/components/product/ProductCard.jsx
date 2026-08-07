@@ -2,28 +2,23 @@ import Button from "../ui/Button";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({
-  id,
-  images,
-  category,
-  name,
-  price,
-  rating,
+  product,
   onAddToCart,
 }) {
   return (
     <div className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg">
 
-      <Link to={`/product/${id}`}>
+      <Link to={`/product/${product._id}`}>
 
         <div className="relative overflow-hidden">
 
           <span className="absolute left-3 top-3 z-10 rounded-full bg-green-700 px-3 py-1 text-xs font-semibold text-white">
-            {category}
+            {product.category}
           </span>
 
           <img
             src={
-              images?.[0]?.url ||
+              product.images?.[0]?.url ||
               "https://placehold.co/600x600?text=No+Image"
             }
             alt={name}
@@ -35,17 +30,17 @@ export default function ProductCard({
         <div className="p-5">
 
           <h3 className="text-xl font-semibold">
-            {name}
+            {product.name}
           </h3>
 
           <div className="mt-3 flex justify-between">
 
             <span className="text-yellow-500">
-              ⭐ {rating || 0}
+              ⭐ {product.rating || 0}
             </span>
 
             <span className="font-bold text-green-700">
-              ₹{price}
+              ₹{product.price}
             </span>
 
           </div>
@@ -61,9 +56,7 @@ export default function ProductCard({
             e.preventDefault();
             e.stopPropagation();
 
-            if (onAddToCart) {
-              onAddToCart(id);
-            }
+            onAddToCart?.(product);
           }}
           className="w-full rounded-xl bg-green-700 py-3 text-white hover:bg-green-800"
         >

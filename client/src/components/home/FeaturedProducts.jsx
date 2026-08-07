@@ -4,11 +4,18 @@ import { useEffect, useState } from "react";
 import Container from "../layout/Container";
 import ProductCard from "../product/ProductCard";
 import Button from "../ui/Button";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slice/cartSlice";
 import { getAllProducts } from "../../api/productApi";
 export default function FeaturedProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+
+    alert(`${product.name} added to cart`);
+  };
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
@@ -64,12 +71,8 @@ export default function FeaturedProducts() {
             products.map((product) => (
               <ProductCard
                 key={product._id}
-                id={product._id}
-                images={product.images}
-                category={product.category}
-                name={product.name}
-                price={product.price}
-                rating={product.rating}
+                product={product}
+                onAddToCart={handleAddToCart}
               />
             ))
           )}
