@@ -4,6 +4,8 @@ export default function FilterSidebar({
     totalProducts,
     selectedCategory,
     setSelectedCategory,
+    priceRange,
+    setPriceRange,
 }) {
     return (
         <aside className="h-fit rounded-2xl border p-6">
@@ -37,6 +39,41 @@ export default function FilterSidebar({
 
             </div>
 
+            <div className="mt-8">
+
+                <h2 className="mb-5 text-xl font-bold">
+                    Price Range
+                </h2>
+
+                <div className="space-y-3">
+
+                    {[
+                        "All",
+                        "0-500",
+                        "500-1000",
+                        "1000-5000",
+                        "5000+",
+                    ].map((price) => (
+
+                        <button
+                            key={price}
+                            onClick={() => setPriceRange(price)}
+                            className={`w-full rounded-lg border px-4 py-2 text-left transition
+                ${priceRange === price
+                                    ? "bg-green-700 text-white"
+                                    : "hover:bg-green-100"
+                                }`}
+                        >
+                            {price === "All"
+                                ? "All Prices"
+                                : `₹${price}`}
+                        </button>
+
+                    ))}
+
+                </div>
+
+            </div>
         </aside>
     );
 }
