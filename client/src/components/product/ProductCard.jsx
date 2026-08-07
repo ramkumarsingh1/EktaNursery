@@ -8,19 +8,17 @@ export default function ProductCard({
   name,
   price,
   rating,
+  onAddToCart,
 }) {
   return (
-    <Link
-      to={`/product/${id}`}
-      className="block"
-    >
-      <div className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl">
+    <div className="group overflow-hidden rounded-2xl border bg-white shadow-sm transition hover:shadow-lg">
 
-        {/* Image */}
+      <Link to={`/product/${id}`}>
+
         <div className="relative overflow-hidden">
 
           <span className="absolute left-3 top-3 z-10 rounded-full bg-green-700 px-3 py-1 text-xs font-semibold text-white">
-            Sale
+            {category}
           </span>
 
           <img
@@ -29,44 +27,51 @@ export default function ProductCard({
               "https://placehold.co/600x600?text=No+Image"
             }
             alt={name}
-            className="h-60 w-full object-cover transition-transform duration-500 group-hover:scale-110"
+            className="h-60 w-full object-cover transition duration-500 group-hover:scale-110"
           />
 
         </div>
 
-        {/* Content */}
-
         <div className="p-5">
 
-          <p className="text-sm font-medium text-green-700">
-            {category}
-          </p>
-
-          <h3 className="mt-2 text-xl font-semibold text-gray-800">
+          <h3 className="text-xl font-semibold">
             {name}
           </h3>
 
-          <div className="mt-4 flex items-center justify-between">
+          <div className="mt-3 flex justify-between">
 
-            <span className="font-semibold text-yellow-500">
+            <span className="text-yellow-500">
               ⭐ {rating || 0}
             </span>
 
-            <span className="text-2xl font-bold text-green-700">
-              ₹{price ?? 0}
+            <span className="font-bold text-green-700">
+              ₹{price}
             </span>
 
           </div>
 
-          <Button
-            className="mt-6 w-full rounded-xl bg-green-700 py-3 text-white hover:bg-green-800"
-          >
-            Add To Cart
-          </Button>
-
         </div>
 
+      </Link>
+
+      <div className="px-5 pb-5">
+
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            if (onAddToCart) {
+              onAddToCart(id);
+            }
+          }}
+          className="w-full rounded-xl bg-green-700 py-3 text-white hover:bg-green-800"
+        >
+          Add To Cart
+        </Button>
+
       </div>
-    </Link>
+
+    </div>
   );
 }

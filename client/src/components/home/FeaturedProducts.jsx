@@ -1,10 +1,33 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Container from "../layout/Container";
 import ProductCard from "../product/ProductCard";
 import Button from "../ui/Button";
-import products from "../../data/products";
 
+import { getAllProducts } from "../../api/productApi";
 export default function FeaturedProducts() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const { data } = await getAllProducts();
+
+        const featuredProducts = data.products.filter(
+          (product) => product.isFeatured
+        );
+
+        setProducts(featuredProducts);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
   return (
     <section className="py-16 bg-gray-50">
       <Container>
@@ -33,12 +56,23 @@ export default function FeaturedProducts() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-            />
-          ))}
+          {loading ? (
+            <h2 className="col-span-4 text-center">
+              Loading...
+            </h2>
+          ) : (
+            products.map((product) => (
+              <ProductCard
+                key={product._id}
+                id={product._id}
+                images={product.images}
+                category={product.category}
+                name={product.name}
+                price={product.price}
+                rating={product.rating}
+              />
+            ))
+          )}
 
         </div>
 
