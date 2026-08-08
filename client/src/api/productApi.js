@@ -17,16 +17,24 @@ export const getAllProducts = ({
         params: {
             page,
             limit,
+
             ...(category &&
                 category !== "All" && {
-                category,
+                    category,
+                }),
+
+            ...(search && {
+                search,
             }),
-            ...(search && { search }),
-            ...(sort && { sort }),
+
+            ...(sort && {
+                sort,
+            }),
+
             ...(priceRange &&
                 priceRange !== "All" && {
-                priceRange,
-            }),
+                    priceRange,
+                }),
         },
     });
 

@@ -17,7 +17,6 @@ export default function Shop() {
     // Search states
     const [searchInput, setSearchInput] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
-
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const [products, setProducts] = useState([]);
@@ -42,63 +41,60 @@ export default function Shop() {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            setSearchTerm(searchInput.trim());
+            setSearchTerm(searchInput);
             setCurrentPage(1);
         }, 500);
 
         return () => clearTimeout(timer);
     }, [searchInput]);
-
     // ==========================================
     // FETCH PRODUCTS
     // ==========================================
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true);
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
 
-                const sort =
-                    sortBy === "lowToHigh"
-                        ? "price_low"
-                        : sortBy === "highToLow"
-                            ? "price_high"
-                            : "newest";
+            const sort =
+                sortBy === "lowToHigh"
+                    ? "price_low"
+                    : sortBy === "highToLow"
+                        ? "price_high"
+                        : "newest";
 
-                const { data } = await getAllProducts({
-                    page: currentPage,
-                    limit: PRODUCTS_PER_PAGE,
-                    category: selectedCategory,
-                    search: searchTerm,
-                    sort,
-                    priceRange,
-                });
+            const { data } = await getAllProducts({
+                page: currentPage,
+                limit: PRODUCTS_PER_PAGE,
+                category: selectedCategory,
+                search: searchTerm,
+                sort,
+                priceRange,
+            });
 
-                setProducts(data.products);
+            setProducts(data.products);
+            setTotalPages(data.pagination.totalPages);
+            setTotalProducts(data.pagination.totalProducts);
+            setCategoryStats(data.categoryStats);
 
-                setTotalPages(data.pagination.totalPages);
+        } catch (error) {
+            console.error(
+                "Fetch Products Error:",
+                error
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
-                setTotalProducts(data.pagination.totalProducts);
-
-                setCategoryStats(data.categoryStats);
-
-            } catch (error) {
-                console.error("Fetch Products Error:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchProducts();
-
-    }, [
-        currentPage,
-        selectedCategory,
-        searchTerm,
-        sortBy,
-        priceRange,
-    ]);
-
+    fetchProducts();
+}, [
+    currentPage,
+    selectedCategory,
+    searchTerm,
+    sortBy,
+    priceRange,
+]);
     // ==========================================
     // CATEGORIES
     // ==========================================
@@ -331,11 +327,10 @@ export default function Shop() {
                                                         page
                                                     )
                                                 }
-                                                className={`rounded-lg px-4 py-2 ${
-                                                    currentPage === page
-                                                        ? "bg-green-700 text-white"
-                                                        : "border hover:bg-gray-100"
-                                                }`}
+                                                className={`rounded-lg px-4 py-2 ${currentPage === page
+                                                    ? "bg-green-700 text-white"
+                                                    : "border hover:bg-gray-100"
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
