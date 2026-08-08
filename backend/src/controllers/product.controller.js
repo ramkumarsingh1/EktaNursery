@@ -87,6 +87,24 @@ export const getAllProducts = async (req, res) => {
     const pageLimit = Number(limit);
 
     const totalProducts = await Product.countDocuments(filter);
+    const categoryStats = await Product.aggregate([
+      {
+        $match: {
+          isActive: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$category",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
 
     const products = await Product.find(filter)
       .sort(sortOption)
@@ -104,6 +122,7 @@ export const getAllProducts = async (req, res) => {
           currentPage < Math.ceil(totalProducts / pageLimit),
         hasPrevPage: currentPage > 1,
       },
+      categoryStats,
     });
   } catch (error) {
     res.status(500).json({
