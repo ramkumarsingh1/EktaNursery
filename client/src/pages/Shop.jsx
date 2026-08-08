@@ -18,6 +18,7 @@ export default function Shop() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const searchTerm = searchParams.get("search") || "";
+    const [searchInput, setSearchInput] = useState(searchTerm);
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -34,48 +35,63 @@ export default function Shop() {
     const PRODUCTS_PER_PAGE = 6;
 
     useEffect(() => {
-    const fetchProducts = async () => {
-        try {
-            setLoading(true);
+        const fetchProducts = async () => {
+            try {
+                setLoading(true);
 
-            const sort =
-                sortBy === "lowToHigh"
-                    ? "price_low"
-                    : sortBy === "highToLow"
-                        ? "price_high"
-                        : "newest";
+                const sort =
+                    sortBy === "lowToHigh"
+                        ? "price_low"
+                        : sortBy === "highToLow"
+                            ? "price_high"
+                            : "newest";
 
-            const { data } = await getAllProducts({
-                page: currentPage,
-                limit: PRODUCTS_PER_PAGE,
-                category: selectedCategory,
-                search: searchTerm,
-                sort,
-                priceRange,
-            });
+                const { data } = await getAllProducts({
+                    page: currentPage,
+                    limit: PRODUCTS_PER_PAGE,
+                    category: selectedCategory,
+                    search: searchTerm,
+                    sort,
+                    priceRange,
+                });
 
-            setProducts(data.products);
-            setTotalPages(data.pagination.totalPages);
-            setTotalProducts(data.pagination.totalProducts);
-            setCategoryStats(data.categoryStats);
+                setProducts(data.products);
+                setTotalPages(data.pagination.totalPages);
+                setTotalProducts(data.pagination.totalProducts);
+                setCategoryStats(data.categoryStats);
 
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    fetchProducts();
+        fetchProducts();
 
-}, [
-    currentPage,
-    selectedCategory,
-    searchTerm,
-    sortBy,
-    priceRange,
-]);
+    }, [
+        currentPage,
+        selectedCategory,
+        searchTerm,
+        sortBy,
+        priceRange,
+    ]);
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchInput.trim()) {
+                setSearchParams({
+                    search: searchInput,
+                });
+            } else {
+                setSearchParams({});
+            }
+
+            setCurrentPage(1);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchInput]);
     // Categories
     const categories = [
         "All",
@@ -91,7 +107,7 @@ export default function Shop() {
         {}
     );
 
-    
+
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
@@ -115,18 +131,8 @@ export default function Shop() {
     };
 
     const handleSearchChange = (value) => {
-        if (value.trim()) {
-            setSearchParams({
-                search: value,
-            });
-        } else {
-            setSearchParams({});
-        }
-
-        // Search change hone par page 1
-        setCurrentPage(1);
+        setSearchInput(value);
     };
-
     const handleClearFilters = () => {
         setSearchParams({});
 
@@ -187,7 +193,7 @@ export default function Shop() {
                 {/* Search */}
                 <div className="mb-6">
                     <SearchBar
-                        searchTerm={searchTerm}
+                        searchTerm={searchInput}
                         setSearchTerm={handleSearchChange}
                     />
                 </div>
