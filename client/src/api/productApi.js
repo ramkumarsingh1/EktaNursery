@@ -5,7 +5,22 @@ const API = axios.create({
     withCredentials: true,
 });
 
-export const getAllProducts = () => API.get("/products");
+export const getAllProducts = ({
+    page = 1,
+    limit = 8,
+    category,
+    search,
+    sort = "newest",
+} = {}) =>
+    API.get("/products", {
+        params: {
+            page,
+            limit,
+            ...(category && category !== "All" && { category }),
+            ...(search && { search }),
+            ...(sort && { sort }),
+        },
+    });
 
 export const createProduct = (formData) =>
     API.post("/products", formData, {
@@ -14,7 +29,7 @@ export const createProduct = (formData) =>
         },
     });
 
-    export const updateProduct = (id, formData) =>
+export const updateProduct = (id, formData) =>
     API.put(`/products/${id}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
