@@ -28,6 +28,7 @@ export default function Shop() {
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [categoryStats, setCategoryStats] = useState([]);
     const [totalProducts, setTotalProducts] = useState(0);
 
     const PRODUCTS_PER_PAGE = 6;
@@ -55,6 +56,7 @@ export default function Shop() {
                 setProducts(data.products);
                 setTotalPages(data.pagination.totalPages);
                 setTotalProducts(data.pagination.totalProducts);
+                setCategoryStats(data.categoryStats);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -73,17 +75,13 @@ export default function Shop() {
     // Categories
     const categories = [
         "All",
-        ...new Set(
-            products.map((product) => product.category)
-        ),
+        ...categoryStats.map((item) => item._id),
     ];
 
     // Category counts
-    const categoryCounts = products.reduce(
-        (acc, product) => {
-            acc[product.category] =
-                (acc[product.category] || 0) + 1;
-
+    const categoryCounts = categoryStats.reduce(
+        (acc, item) => {
+            acc[item._id] = item.count;
             return acc;
         },
         {}
@@ -236,7 +234,7 @@ export default function Shop() {
                         <FilterSidebar
                             categories={categories}
                             categoryCounts={categoryCounts}
-                            totalProducts={products.length}
+                            totalProducts={totalProducts}
                             selectedCategory={selectedCategory}
                             setSelectedCategory={
                                 handleCategoryChange
@@ -354,7 +352,7 @@ export default function Shop() {
                             <FilterSidebar
                                 categories={categories}
                                 categoryCounts={categoryCounts}
-                                totalProducts={products.length}
+                                totalProducts={totalProducts}
                                 selectedCategory={
                                     selectedCategory
                                 }
