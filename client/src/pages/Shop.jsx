@@ -246,8 +246,8 @@ export default function Shop() {
                 <div className="mb-6">
 
                     <SearchBar
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        searchTerm={searchInput}
+                        setSearchTerm={setSearchInput}
                     />
 
                 </div>
