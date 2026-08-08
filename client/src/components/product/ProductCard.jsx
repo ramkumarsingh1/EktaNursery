@@ -28,7 +28,7 @@ export default function ProductCard({
         </div>
 
         <div className="p-5">
-          <div className="flex mt-2">
+          <div className="flex text-green-500">
             {product.category}
           </div>
           <h3 className="text-xl font-semibold">
