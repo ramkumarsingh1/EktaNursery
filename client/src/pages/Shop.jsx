@@ -80,16 +80,17 @@ export default function Shop() {
                             ? "price_high"
                             : "newest";
 
-                const { data } =
-                    await getAllProducts({
-                        page: currentPage,
-                        limit: PRODUCTS_PER_PAGE,
-                        category:
-                            selectedCategory,
-                        search: searchTerm,
-                        sort,
-                        priceRange,
-                    });
+                const { data } = await getAllProducts({
+                    page: currentPage,
+                    limit: PRODUCTS_PER_PAGE,
+                    category:
+                        selectedCategory === "All"
+                            ? ""
+                            : selectedCategory,
+                    search: searchTerm,
+                    sort,
+                    priceRange,
+                });
 
                 setProducts(
                     data.products || []
@@ -181,14 +182,6 @@ export default function Shop() {
         setCurrentPage(1);
     };
 
-    // --------------------------------
-    // SEARCH CHANGE
-    // --------------------------------
-    const handleSearchChange = (
-        value
-    ) => {
-        setSearchInput(value);
-    };
 
     // --------------------------------
     // CLEAR
@@ -254,11 +247,7 @@ export default function Shop() {
 
                     <SearchBar
                         value={searchInput}
-                        onChange={(e) =>
-                            handleSearchChange(
-                                e.target.value
-                            )
-                        }
+                        onChange={(e) => setSearchInput(e.target.value)}
                     />
 
                 </div>
@@ -373,12 +362,11 @@ export default function Shop() {
                                                             page
                                                         )
                                                     }
-                                                    className={`rounded-lg px-4 py-2 ${
-                                                        currentPage ===
+                                                    className={`rounded-lg px-4 py-2 ${currentPage ===
                                                         page
-                                                            ? "bg-green-700 text-white"
-                                                            : "border hover:bg-gray-100"
-                                                    }`}
+                                                        ? "bg-green-700 text-white"
+                                                        : "border hover:bg-gray-100"
+                                                        }`}
                                                 >
                                                     {
                                                         page
