@@ -28,6 +28,7 @@ export default function Shop() {
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [totalProducts, setTotalProducts] = useState(0);
 
     const PRODUCTS_PER_PAGE = 6;
 
@@ -40,8 +41,8 @@ export default function Shop() {
                     sortBy === "lowToHigh"
                         ? "price_low"
                         : sortBy === "highToLow"
-                        ? "price_high"
-                        : "newest";
+                            ? "price_high"
+                            : "newest";
 
                 const { data } = await getAllProducts({
                     page: currentPage,
@@ -52,8 +53,8 @@ export default function Shop() {
                 });
 
                 setProducts(data.products);
-
                 setTotalPages(data.pagination.totalPages);
+                setTotalProducts(data.pagination.totalProducts);
             } catch (error) {
                 console.error(error);
             } finally {
@@ -183,11 +184,8 @@ export default function Shop() {
                         </h1>
 
                         <p className="mt-2 text-gray-500">
-                            Showing{" "}
-                            {filteredProducts.length}{" "}
-                            {filteredProducts.length === 1
-                                ? "Product"
-                                : "Products"}
+                            Showing {totalProducts}{" "}
+                            {totalProducts === 1 ? "Product" : "Products"}
                         </p>
                     </div>
 
@@ -295,12 +293,11 @@ export default function Shop() {
                                                         page
                                                     )
                                                 }
-                                                className={`rounded-lg px-4 py-2 ${
-                                                    currentPage ===
+                                                className={`rounded-lg px-4 py-2 ${currentPage ===
                                                     page
-                                                        ? "bg-green-700 text-white"
-                                                        : "border hover:bg-gray-100"
-                                                }`}
+                                                    ? "bg-green-700 text-white"
+                                                    : "border hover:bg-gray-100"
+                                                    }`}
                                             >
                                                 {page}
                                             </button>
