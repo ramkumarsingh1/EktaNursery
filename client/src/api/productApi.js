@@ -11,14 +11,22 @@ export const getAllProducts = ({
     category,
     search,
     sort = "newest",
+    priceRange,
 } = {}) =>
     API.get("/products", {
         params: {
             page,
             limit,
-            ...(category && category !== "All" && { category }),
+            ...(category &&
+                category !== "All" && {
+                category,
+            }),
             ...(search && { search }),
             ...(sort && { sort }),
+            ...(priceRange &&
+                priceRange !== "All" && {
+                priceRange,
+            }),
         },
     });
 

@@ -29,13 +29,39 @@ export const getAllProducts = async (req, res) => {
       category,
       search,
       page = 1,
-      limit = 8,
+      limit = 6,
       sort = "newest",
+      priceRange,
     } = req.query;
 
     const filter = {
       isActive: true,
     };
+    if (priceRange) {
+    switch (priceRange) {
+        case "0-500":
+            filter.price = { $lte: 500 };
+            break;
+
+        case "500-1000":
+            filter.price = {
+                $gt: 500,
+                $lte: 1000,
+            };
+            break;
+
+        case "1000-5000":
+            filter.price = {
+                $gt: 1000,
+                $lte: 5000,
+            };
+            break;
+
+        case "5000+":
+            filter.price = { $gt: 5000 };
+            break;
+    }
+}
 
     if (category) {
       filter.category = category;

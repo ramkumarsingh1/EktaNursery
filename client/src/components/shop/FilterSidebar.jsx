@@ -31,7 +31,7 @@ export default function FilterSidebar({
                         <span className="text-sm opacity-80">
                             {category === "All"
                                 ? totalProducts
-                                : categoryCounts[category]}
+                                : categoryCounts[category] || 0}
                         </span>
                     </button>
 

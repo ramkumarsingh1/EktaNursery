@@ -88,29 +88,13 @@ export default function Shop() {
     );
 
     // Price filtering
-    const filteredProducts = products.filter((product) => {
-        switch (priceRange) {
-            case "0-500":
-                return product.price <= 500;
-
-            case "500-1000":
-                return (
-                    product.price > 500 &&
-                    product.price <= 1000
-                );
-
-            case "1000-5000":
-                return (
-                    product.price > 1000 &&
-                    product.price <= 5000
-                );
-
-            case "5000+":
-                return product.price > 5000;
-
-            default:
-                return true;
-        }
+    const { data } = await getAllProducts({
+        page: currentPage,
+        limit: PRODUCTS_PER_PAGE,
+        category: selectedCategory,
+        search: searchTerm,
+        sort,
+        priceRange,
     });
 
     const handleCategoryChange = (category) => {
@@ -251,7 +235,7 @@ export default function Shop() {
                     <div>
 
                         <ProductGrid
-                            products={filteredProducts}
+                            products={products}
                         />
 
                         {/* Pagination */}
