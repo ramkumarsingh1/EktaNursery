@@ -29,7 +29,7 @@ export default function Shop() {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    const PRODUCTS_PER_PAGE = 8;
+    const PRODUCTS_PER_PAGE = 6;
 
     useEffect(() => {
         const fetchProducts = async () => {

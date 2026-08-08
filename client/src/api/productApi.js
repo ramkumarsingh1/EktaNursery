@@ -7,7 +7,7 @@ const API = axios.create({
 
 export const getAllProducts = ({
     page = 1,
-    limit = 8,
+    limit = 6,
     category,
     search,
     sort = "newest",
