@@ -68,21 +68,27 @@ export const getAllProducts = async (req, res) => {
     }
 
     if (search) {
-      filter.$or = [
+    filter.$or = [
         {
-          name: {
-            $regex: search,
-            $options: "i",
-          },
+            name: {
+                $regex: search,
+                $options: "i",
+            },
         },
         {
-          description: {
-            $regex: search,
-            $options: "i",
-          },
+            description: {
+                $regex: search,
+                $options: "i",
+            },
         },
-      ];
-    }
+        {
+            category: {
+                $regex: search,
+                $options: "i",
+            },
+        },
+    ];
+}
 
     let sortOption = {
       createdAt: -1,
