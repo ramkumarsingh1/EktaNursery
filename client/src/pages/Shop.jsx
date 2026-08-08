@@ -34,43 +34,47 @@ export default function Shop() {
     const PRODUCTS_PER_PAGE = 6;
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                setLoading(true);
+    const fetchProducts = async () => {
+        try {
+            setLoading(true);
 
-                const sort =
-                    sortBy === "lowToHigh"
-                        ? "price_low"
-                        : sortBy === "highToLow"
-                            ? "price_high"
-                            : "newest";
+            const sort =
+                sortBy === "lowToHigh"
+                    ? "price_low"
+                    : sortBy === "highToLow"
+                        ? "price_high"
+                        : "newest";
 
-                const { data } = await getAllProducts({
-                    page: currentPage,
-                    limit: PRODUCTS_PER_PAGE,
-                    category: selectedCategory,
-                    search: searchTerm,
-                    sort,
-                });
+            const { data } = await getAllProducts({
+                page: currentPage,
+                limit: PRODUCTS_PER_PAGE,
+                category: selectedCategory,
+                search: searchTerm,
+                sort,
+                priceRange,
+            });
 
-                setProducts(data.products);
-                setTotalPages(data.pagination.totalPages);
-                setTotalProducts(data.pagination.totalProducts);
-                setCategoryStats(data.categoryStats);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        };
+            setProducts(data.products);
+            setTotalPages(data.pagination.totalPages);
+            setTotalProducts(data.pagination.totalProducts);
+            setCategoryStats(data.categoryStats);
 
-        fetchProducts();
-    }, [
-        currentPage,
-        selectedCategory,
-        searchTerm,
-        sortBy,
-    ]);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchProducts();
+
+}, [
+    currentPage,
+    selectedCategory,
+    searchTerm,
+    sortBy,
+    priceRange,
+]);
 
     // Categories
     const categories = [
@@ -87,15 +91,7 @@ export default function Shop() {
         {}
     );
 
-    // Price filtering
-    const { data } = await getAllProducts({
-        page: currentPage,
-        limit: PRODUCTS_PER_PAGE,
-        category: selectedCategory,
-        search: searchTerm,
-        sort,
-        priceRange,
-    });
+    
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
