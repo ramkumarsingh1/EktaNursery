@@ -5,7 +5,6 @@ import Container from "../components/layout/Container";
 import SearchBar from "../components/shop/SearchBar";
 
 import { FiFilter } from "react-icons/fi";
-import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { getAllProducts } from "../api/productApi";
@@ -15,10 +14,9 @@ export default function Shop() {
     const [priceRange, setPriceRange] = useState("All");
     const [sortBy, setSortBy] = useState("default");
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const searchTerm = searchParams.get("search") || "";
-    const [searchInput, setSearchInput] = useState(searchTerm);
+    // Search states
+    const [searchInput, setSearchInput] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
 
@@ -29,10 +27,31 @@ export default function Shop() {
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+
+    // Category statistics
     const [categoryStats, setCategoryStats] = useState([]);
+
+    // Total products
     const [totalProducts, setTotalProducts] = useState(0);
 
     const PRODUCTS_PER_PAGE = 6;
+
+    // ==========================================
+    // SEARCH DEBOUNCE
+    // ==========================================
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setSearchTerm(searchInput.trim());
+            setCurrentPage(1);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchInput]);
+
+    // ==========================================
+    // FETCH PRODUCTS
+    // ==========================================
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -56,12 +75,15 @@ export default function Shop() {
                 });
 
                 setProducts(data.products);
+
                 setTotalPages(data.pagination.totalPages);
+
                 setTotalProducts(data.pagination.totalProducts);
+
                 setCategoryStats(data.categoryStats);
 
             } catch (error) {
-                console.error(error);
+                console.error("Fetch Products Error:", error);
             } finally {
                 setLoading(false);
             }
@@ -77,28 +99,19 @@ export default function Shop() {
         priceRange,
     ]);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (searchInput.trim()) {
-                setSearchParams({
-                    search: searchInput,
-                });
-            } else {
-                setSearchParams({});
-            }
+    // ==========================================
+    // CATEGORIES
+    // ==========================================
 
-            setCurrentPage(1);
-        }, 500);
-
-        return () => clearTimeout(timer);
-    }, [searchInput]);
-    // Categories
     const categories = [
         "All",
         ...categoryStats.map((item) => item._id),
     ];
 
-    // Category counts
+    // ==========================================
+    // CATEGORY COUNTS
+    // ==========================================
+
     const categoryCounts = categoryStats.reduce(
         (acc, item) => {
             acc[item._id] = item.count;
@@ -107,41 +120,61 @@ export default function Shop() {
         {}
     );
 
-
+    // ==========================================
+    // CATEGORY CHANGE
+    // ==========================================
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
-
-        // Filter change hone par page 1
         setCurrentPage(1);
     };
+
+    // ==========================================
+    // PRICE CHANGE
+    // ==========================================
 
     const handlePriceChange = (price) => {
         setPriceRange(price);
-
-        // Filter change hone par page 1
         setCurrentPage(1);
     };
+
+    // ==========================================
+    // SORT CHANGE
+    // ==========================================
 
     const handleSortChange = (value) => {
         setSortBy(value);
-
-        // Sort change hone par page 1
         setCurrentPage(1);
     };
+
+    // ==========================================
+    // SEARCH CHANGE
+    // ==========================================
 
     const handleSearchChange = (value) => {
         setSearchInput(value);
     };
+
+    // ==========================================
+    // CLEAR FILTERS
+    // ==========================================
+
     const handleClearFilters = () => {
-        setSearchParams({});
+        setSearchInput("");
+        setSearchTerm("");
 
         setSelectedCategory("All");
+
         setPriceRange("All");
+
         setSortBy("default");
 
         setCurrentPage(1);
     };
+
+    // ==========================================
+    // LOADING
+    // ==========================================
 
     if (loading) {
         return (
@@ -155,22 +188,31 @@ export default function Shop() {
         );
     }
 
+    // ==========================================
+    // UI
+    // ==========================================
+
     return (
         <section className="py-6">
             <Container>
 
-                {/* Header */}
+                {/* ================= HEADER ================= */}
+
                 <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
                     <div className="flex justify-between gap-3">
+
                         <h1 className="text-3xl font-bold">
                             Shop Plants
                         </h1>
 
                         <p className="mt-2 text-gray-500">
                             Showing {totalProducts}{" "}
-                            {totalProducts === 1 ? "Product" : "Products"}
+                            {totalProducts === 1
+                                ? "Product"
+                                : "Products"}
                         </p>
+
                     </div>
 
                     <div className="flex justify-between gap-3">
@@ -188,33 +230,43 @@ export default function Shop() {
                         </button>
 
                     </div>
+
                 </div>
 
-                {/* Search */}
+                {/* ================= SEARCH ================= */}
+
                 <div className="mb-6">
+
                     <SearchBar
                         value={searchInput}
-                        onChange={(e) => handleSearchChange(e.target.value)}
+                        onChange={(e) =>
+                            handleSearchChange(e.target.value)
+                        }
                     />
+
                 </div>
 
-                {/* Mobile Filter */}
+                {/* ================= MOBILE FILTER ================= */}
+
                 <div className="mb-6 lg:hidden">
+
                     <button
-                        onClick={() =>
-                            setIsFilterOpen(true)
-                        }
+                        onClick={() => setIsFilterOpen(true)}
                         className="flex items-center gap-2 rounded-lg bg-green-700 px-4 py-2 text-white"
                     >
                         <FiFilter />
+
                         Filters
                     </button>
+
                 </div>
 
-                {/* Main Layout */}
+                {/* ================= MAIN LAYOUT ================= */}
+
                 <div className="grid items-start gap-8 lg:grid-cols-[280px_1fr]">
 
-                    {/* Desktop Sidebar */}
+                    {/* DESKTOP SIDEBAR */}
+
                     <div className="hidden lg:block">
 
                         <FilterSidebar
@@ -233,26 +285,27 @@ export default function Shop() {
 
                     </div>
 
-                    {/* Products */}
+                    {/* ================= PRODUCTS ================= */}
+
                     <div>
 
                         <ProductGrid
                             products={products}
                         />
 
-                        {/* Pagination */}
+                        {/* ================= PAGINATION ================= */}
+
                         {totalPages > 1 && (
+
                             <div className="mt-10 flex items-center justify-center gap-2">
 
-                                {/* Previous */}
+                                {/* PREVIOUS */}
+
                                 <button
-                                    disabled={
-                                        currentPage === 1
-                                    }
+                                    disabled={currentPage === 1}
                                     onClick={() =>
                                         setCurrentPage(
-                                            (prev) =>
-                                                prev - 1
+                                            (prev) => prev - 1
                                         )
                                     }
                                     className="rounded-lg border px-4 py-2 transition disabled:cursor-not-allowed disabled:opacity-40 hover:bg-gray-100"
@@ -260,14 +313,15 @@ export default function Shop() {
                                     Previous
                                 </button>
 
-                                {/* Page Numbers */}
+                                {/* PAGE NUMBERS */}
+
                                 {Array.from(
                                     {
                                         length: totalPages,
                                     },
                                     (_, index) => {
-                                        const page =
-                                            index + 1;
+
+                                        const page = index + 1;
 
                                         return (
                                             <button
@@ -277,11 +331,11 @@ export default function Shop() {
                                                         page
                                                     )
                                                 }
-                                                className={`rounded-lg px-4 py-2 ${currentPage ===
-                                                    page
-                                                    ? "bg-green-700 text-white"
-                                                    : "border hover:bg-gray-100"
-                                                    }`}
+                                                className={`rounded-lg px-4 py-2 ${
+                                                    currentPage === page
+                                                        ? "bg-green-700 text-white"
+                                                        : "border hover:bg-gray-100"
+                                                }`}
                                             >
                                                 {page}
                                             </button>
@@ -289,16 +343,15 @@ export default function Shop() {
                                     }
                                 )}
 
-                                {/* Next */}
+                                {/* NEXT */}
+
                                 <button
                                     disabled={
-                                        currentPage ===
-                                        totalPages
+                                        currentPage === totalPages
                                     }
                                     onClick={() =>
                                         setCurrentPage(
-                                            (prev) =>
-                                                prev + 1
+                                            (prev) => prev + 1
                                         )
                                     }
                                     className="rounded-lg border px-4 py-2 transition disabled:cursor-not-allowed disabled:opacity-40 hover:bg-gray-100"
@@ -312,8 +365,10 @@ export default function Shop() {
                     </div>
                 </div>
 
-                {/* Mobile Filter Drawer */}
+                {/* ================= MOBILE FILTER DRAWER ================= */}
+
                 {isFilterOpen && (
+
                     <div className="fixed inset-0 z-50 bg-black/50">
 
                         <div className="absolute left-0 top-0 h-full w-72 bg-white p-5 shadow-xl">
@@ -339,9 +394,7 @@ export default function Shop() {
                                 categories={categories}
                                 categoryCounts={categoryCounts}
                                 totalProducts={totalProducts}
-                                selectedCategory={
-                                    selectedCategory
-                                }
+                                selectedCategory={selectedCategory}
                                 setSelectedCategory={
                                     handleCategoryChange
                                 }
