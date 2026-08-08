@@ -169,7 +169,7 @@ export default function Shop() {
                         Filters
                     </button>
                 </div>
-                <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+                <div className="grid items-start lg:grid-cols-[280px_1fr] gap-8">
 
                     <div className="hidden lg:block">
                         <FilterSidebar
