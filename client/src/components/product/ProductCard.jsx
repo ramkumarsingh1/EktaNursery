@@ -1,10 +1,18 @@
 import Button from "../ui/Button";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
+export default function ProductCard({product}) {
 
-export default function ProductCard({
-    product,
-    onAddToCart,
-}) {
+    const dispatch = useDispatch();
+
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        dispatch(addToCart(product));
+        console.log("Added to cart:", product.name);
+    };
     return (
         <div className="rounded-2xl border overflow-hidden">
 
@@ -59,12 +67,7 @@ export default function ProductCard({
             <div className="px-5 pb-5">
 
                 <Button
-                    onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        onAddToCart?.(product);
-                    }}
+                    onClick={handleAddToCart}
                     className="w-full rounded-xl bg-green-700 py-3 text-white hover:bg-green-800"
                 >
                     Add To Cart
