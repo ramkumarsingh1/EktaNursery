@@ -31,12 +31,15 @@ export default function OrderSummary() {
                 {cartItems.map((item) => (
 
                     <div
-                        key={item.id}
+                        key={item._id}
                         className="flex items-center gap-4 border-b pb-4"
                     >
 
                         <img
-                            src={item.images[0]}
+                            src={
+                                item.images?.[0]?.url ||
+                                "https://placehold.co/300x300?text=No+Image"
+                            }
                             alt={item.name}
                             className="h-16 w-16 rounded-lg object-cover"
                         />
