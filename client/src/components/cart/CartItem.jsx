@@ -14,7 +14,10 @@ export default function CartItem({ item }) {
 
       {/* Product Image */}
       <img
-        src={item.images[0]}
+        src={
+          item.images?.[0]?.url ||
+          "https://placehold.co/300x300?text=No+Image"
+        }
         alt={item.name}
         className="h-28 w-28 rounded-xl object-cover"
       />
@@ -40,7 +43,7 @@ export default function CartItem({ item }) {
       <div className="flex items-center gap-3">
 
         <Button
-          onClick={() => dispatch(decreaseQuantity(item.id))}
+          onClick={() => dispatch(decreaseQuantity(item._id))}
           className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300"
         >
           -
@@ -51,7 +54,7 @@ export default function CartItem({ item }) {
         </span>
 
         <Button
-          onClick={() => dispatch(increaseQuantity(item.id))}
+          onClick={() => dispatch(increaseQuantity(item._id))}
           className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300"
         >
           +
@@ -70,7 +73,7 @@ export default function CartItem({ item }) {
 
       {/* Remove */}
       <Button
-        onClick={() => dispatch(removeFromCart(item.id))}
+        onClick={() => dispatch(removeFromCart(item._id))}
         className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
       >
         Remove
