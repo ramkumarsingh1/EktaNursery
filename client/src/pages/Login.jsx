@@ -62,66 +62,68 @@ export default function Login() {
     };
 
     return (
-        <div>
-            <h1 className="mb-2 text-center text-3xl font-bold text-green-700">
-                Login
-            </h1>
-
-            <p className="mb-8 text-center text-gray-500">
-                Welcome back to Ekta Nursery
-            </p>
-
-            <form
-                onSubmit={handleSubmit}
-                className="space-y-5"
-            >
-                <div>
-                    <label className="mb-2 block font-medium">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                        className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
-                    />
-                </div>
-
-                <div>
-                    <label className="mb-2 block font-medium">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        placeholder="Enter your password"
-                        className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
-                    />
-                </div>
-
-                <button
-                    type="submit"
-                    className="w-full rounded-lg bg-green-700 py-3 font-semibold text-white transition hover:bg-green-800"
-                >
+        <div className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-10">
+            <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
+                <h1 className="mb-2 text-center text-3xl font-bold text-green-700">
                     Login
-                </button>
-            </form>
+                </h1>
 
-            <p className="mt-6 text-center text-sm">
-                Don't have an account?{" "}
-                <Link
-                    to="/register"
-                    className="font-semibold text-green-700"
+                <p className="mb-8 text-center text-gray-500">
+                    Welcome back to Ekta Nursery
+                </p>
+
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
                 >
-                    Register
-                </Link>
-            </p>
+                    <div>
+                        <label className="mb-2 block font-medium">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter your email"
+                            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="mb-2 block font-medium">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full rounded-lg bg-green-700 py-3 font-semibold text-white transition hover:bg-green-800"
+                    >
+                        Login
+                    </button>
+                </form>
+
+                <p className="mt-6 text-center text-sm">
+                    Don't have an account?{" "}
+                    <Link
+                        to="/register"
+                        className="font-semibold text-green-700"
+                    >
+                        Register
+                    </Link>
+                </p>
+            </div>
         </div>
     );
 }
