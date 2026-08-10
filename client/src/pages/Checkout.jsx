@@ -3,6 +3,7 @@ import BillingForm from "../components/checkout/BillingForm";
 import OrderSummary from "../components/checkout/OrderSummary";
 import PaymentMethod from "../components/checkout/PaymentMethod";
 import { useState } from "react";
+
 export default function Checkout() {
     const [formData, setFormData] = useState({
         fullName: "",
@@ -15,6 +16,7 @@ export default function Checkout() {
     });
 
     const [paymentMethod, setPaymentMethod] = useState("cod");
+
     return (
         <section className="py-10">
             <Container>
@@ -30,13 +32,17 @@ export default function Checkout() {
                             formData={formData}
                             setFormData={setFormData}
                         />
+
                         <PaymentMethod
                             paymentMethod={paymentMethod}
                             setPaymentMethod={setPaymentMethod}
                         />
                     </div>
 
-                    <OrderSummary />
+                    <OrderSummary
+                        formData={formData}
+                        paymentMethod={paymentMethod}
+                    />
 
                 </div>
 

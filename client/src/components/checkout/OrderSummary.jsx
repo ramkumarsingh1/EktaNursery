@@ -1,23 +1,106 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "../ui/Button";
-import { useDispatch } from "react-redux";
 import { clearCart } from "../../redux/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../api/orderApi";
+import { useState } from "react";
 
-export default function OrderSummary() {
+export default function OrderSummary({
+    formData,
+    paymentMethod,
+}) {
     const cartItems = useSelector((state) => state.cart.items);
-    const dispatch = useDispatch();
 
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const [loading, setLoading] = useState(false);
+
     const subtotal = cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) =>
+            total + item.price * item.quantity,
         0
     );
 
-    const deliveryCharge = subtotal > 999 ? 0 : 99;
+    const deliveryCharge =
+        subtotal > 999 ? 0 : 99;
 
     const total = subtotal + deliveryCharge;
+
+    const handlePlaceOrder = async () => {
+        // Cart validation
+        if (cartItems.length === 0) {
+            alert("Your cart is empty");
+            return;
+        }
+
+        // Billing validation
+        const requiredFields = [
+            "fullName",
+            "phone",
+            "email",
+            "address",
+            "city",
+            "state",
+            "pincode",
+        ];
+
+        for (const field of requiredFields) {
+            if (!formData[field]?.trim()) {
+                alert(`Please enter ${field}`);
+                return;
+            }
+        }
+
+        try {
+            setLoading(true);
+
+            const orderData = {
+                items: cartItems.map((item) => ({
+                    product: item._id,
+                    quantity: item.quantity,
+                })),
+
+                shippingAddress: formData,
+
+                paymentMethod,
+            };
+
+            const { data } = await createOrder(orderData);
+
+            console.log("Order Created:", data);
+
+            if (!data.success || !data.order?._id) {
+                throw new Error(
+                    data.message || "Order creation failed"
+                );
+            }
+
+            // Clear cart only after successful order
+            dispatch(clearCart());
+
+            // Send real order ID to success page
+            navigate("/order-success", {
+                state: {
+                    orderId: data.order._id,
+                },
+            });
+
+        } catch (error) {
+            console.error(
+                "Place Order Error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                error.message ||
+                "Failed to place order"
+            );
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="sticky top-24 rounded-2xl border bg-white p-6 shadow-sm">
@@ -69,15 +152,11 @@ export default function OrderSummary() {
             <div className="mt-2 space-y-2 border-t pt-6">
 
                 <div className="flex justify-between">
-
                     <span>Subtotal</span>
-
                     <span>₹{subtotal}</span>
-
                 </div>
 
                 <div className="flex justify-between">
-
                     <span>Delivery</span>
 
                     <span>
@@ -85,30 +164,28 @@ export default function OrderSummary() {
                             ? "FREE"
                             : `₹${deliveryCharge}`}
                     </span>
-
                 </div>
 
                 <div className="flex justify-between text-xl font-bold">
 
                     <span>Total</span>
 
-                    <span>₹{total}</span>
+                    <span>
+                        ₹{total}
+                    </span>
 
                 </div>
 
             </div>
 
             <Button
-                onClick={() => {
-
-                    dispatch(clearCart());
-
-                    navigate("/order-success");
-
-                }}
-                className="mt-8 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800"
+                onClick={handlePlaceOrder}
+                disabled={loading}
+                className="mt-8 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-                Place Order
+                {loading
+                    ? "Placing Order..."
+                    : "Place Order"}
             </Button>
 
         </div>
