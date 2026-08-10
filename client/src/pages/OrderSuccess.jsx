@@ -1,13 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FiCheckCircle } from "react-icons/fi";
 import Container from "../components/layout/Container";
 
 export default function OrderSuccess() {
-    const orderId =
-        "ORD" +
-        Math.floor(
-            100000 + Math.random() * 900000
-        );
+    const location = useLocation();
+
+    const orderId = location.state?.orderId;
 
     return (
         <Container>
@@ -35,8 +33,8 @@ export default function OrderSuccess() {
                             Order ID
                         </p>
 
-                        <h2 className="mt-2 text-2xl font-bold text-green-700">
-                            {orderId}
+                        <h2 className="mt-2 break-all text-2xl font-bold text-green-700">
+                            {orderId || "Order ID unavailable"}
                         </h2>
 
                     </div>
