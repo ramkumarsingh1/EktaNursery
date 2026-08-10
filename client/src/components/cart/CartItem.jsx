@@ -55,7 +55,8 @@ export default function CartItem({ item }) {
 
         <Button
           onClick={() => dispatch(increaseQuantity(item._id))}
-          className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300"
+          disabled={item.quantity >= item.stock}
+          className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           +
         </Button>
