@@ -1,3 +1,4 @@
+
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -10,28 +11,34 @@ const cartSlice = createSlice({
     initialState,
 
     reducers: {
-
         addToCart(state, action) {
-
             const product = action.payload;
 
             const existingItem = state.items.find(
-                item => item._id === product._id
+                (item) => item._id === product._id
             );
 
+            const requestedQuantity = product.quantity || 1;
+
             if (existingItem) {
+                const newQuantity =
+                    existingItem.quantity + requestedQuantity;
 
-                existingItem.quantity += 1;
-
+                existingItem.quantity = Math.min(
+                    newQuantity,
+                    existingItem.stock
+                );
             } else {
+                const safeQuantity = Math.min(
+                    requestedQuantity,
+                    product.stock
+                );
 
                 state.items.push({
                     ...product,
-                    quantity: 1,
+                    quantity: safeQuantity,
                 });
-
             }
-
         },
 
         removeFromCart(state, action) {
@@ -40,19 +47,19 @@ const cartSlice = createSlice({
             );
         },
 
-       increaseQuantity(state, action) {
+        increaseQuantity(state, action) {
             const item = state.items.find(
-                item => item._id === action.payload
+                (item) => item._id === action.payload
             );
 
-            if (item) {
+            if (item && item.quantity < item.stock) {
                 item.quantity++;
             }
         },
 
         decreaseQuantity(state, action) {
             const item = state.items.find(
-                item => item._id === action.payload
+                (item) => item._id === action.payload
             );
 
             if (item && item.quantity > 1) {
@@ -61,11 +68,8 @@ const cartSlice = createSlice({
         },
 
         clearCart(state) {
-
             state.items = [];
-
         },
-
     },
 });
 
@@ -78,3 +82,4 @@ export const {
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
+
