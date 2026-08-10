@@ -1,7 +1,13 @@
+
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {
+    Link,
+    useLocation,
+    useNavigate,
+} from "react-router-dom";
+
 import { registerUser } from "../api/authApi";
+
 export default function Register() {
     const [formData, setFormData] = useState({
         name: "",
@@ -10,7 +16,9 @@ export default function Register() {
         password: "",
         confirmPassword: "",
     });
+
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChange = (e) => {
         setFormData({
@@ -18,6 +26,7 @@ export default function Register() {
             [e.target.name]: e.target.value,
         });
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -47,15 +56,24 @@ export default function Register() {
 
             alert(data.message);
 
-            navigate("/login");
+            const redirectTo = location.state?.from || "/";
+
+            navigate("/login", {
+                state: {
+                    from: redirectTo,
+                },
+                replace: true,
+            });
         } catch (error) {
             console.error(error);
 
             alert(
-                error.response?.data?.message || "Registration Failed"
+                error.response?.data?.message ||
+                "Registration Failed"
             );
         }
     };
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-10">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
@@ -68,7 +86,10 @@ export default function Register() {
                     Join Ekta Nursery and start shopping
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-5"
+                >
 
                     {/* Name */}
                     <div>
@@ -161,8 +182,12 @@ export default function Register() {
 
                 <p className="mt-6 text-center text-sm">
                     Already have an account?{" "}
+
                     <Link
                         to="/login"
+                        state={{
+                            from: location.state?.from || "/",
+                        }}
                         className="font-semibold text-green-700 hover:underline"
                     >
                         Login
@@ -173,3 +198,4 @@ export default function Register() {
         </div>
     );
 }
+

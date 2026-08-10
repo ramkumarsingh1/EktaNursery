@@ -118,6 +118,7 @@ export default function Login() {
                     Don't have an account?{" "}
                     <Link
                         to="/register"
+                        state={{ from: location.state?.from || "/" }}
                         className="font-semibold text-green-700"
                     >
                         Register
