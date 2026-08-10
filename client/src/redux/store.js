@@ -7,8 +7,7 @@ import {
 import storage from "redux-persist/es/storage";
 import cartReducer from "./slices/cartSlice";
 import authReducer from "./auth/authSlice";
-console.log("Storage Object:", storage);
-console.log("Type:", typeof storage);
+
 const rootReducer = combineReducers({
   cart: cartReducer,
   auth: authReducer,
