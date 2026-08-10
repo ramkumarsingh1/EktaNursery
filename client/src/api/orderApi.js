@@ -10,3 +10,11 @@ export const createOrder = (orderData) =>
 
 export const getMyOrders = () =>
     API.get("/orders/my-orders");
+
+export const createRazorpayOrder = (amount) =>
+    API.post("/orders/payment/create", {
+        amount,
+    });
+
+export const verifyRazorpayPayment = (paymentData) =>
+    API.post("/orders/payment/verify", paymentData);
