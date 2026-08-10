@@ -235,22 +235,24 @@ export default function MobileDrawer({
                             Cart
                         </div>
 
-                        <span className="rounded-full bg-white px-2 py-1 text-sm text-green-700">
-                            {cartItems.reduce(
-                                (total, item) => total + item.quantity,
-                                0
-                            )}
-                        </span>
+                        {cartItems.length > 0 && (
+                            <span className="rounded-full bg-white px-2 py-1 text-sm text-green-700">
+                                {cartItems.reduce(
+                                    (total, item) => total + item.quantity,
+                                    0
+                                )}
+                            </span>
+                        )}
                     </NavLink>
                     {isAuthenticated && (
-    <button
-        onClick={handleLogout}
-        className="mt-6 flex w-full items-center gap-3 rounded-lg bg-red-500 p-3 text-white transition hover:bg-red-600"
-    >
-        <FiLogOut/>
-        Logout
-    </button>
-)}
+                        <button
+                            onClick={handleLogout}
+                            className="mt-6 flex w-full items-center gap-3 rounded-lg bg-red-500 p-3 text-white transition hover:bg-red-600"
+                        >
+                            <FiLogOut />
+                            Logout
+                        </button>
+                    )}
 
                 </nav>
             </div>

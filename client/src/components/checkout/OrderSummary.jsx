@@ -17,24 +17,20 @@ export default function OrderSummary({
     const [loading, setLoading] = useState(false);
 
     const subtotal = cartItems.reduce(
-        (total, item) =>
-            total + item.price * item.quantity,
+        (total, item) => total + item.price * item.quantity,
         0
     );
 
-    const deliveryCharge =
-        subtotal > 999 ? 0 : 99;
+    const deliveryCharge = subtotal > 999 ? 0 : 99;
 
     const total = subtotal + deliveryCharge;
 
     const handlePlaceOrder = async () => {
-        // Cart validation
         if (cartItems.length === 0) {
             alert("Your cart is empty");
             return;
         }
 
-        // Billing validation
         const requiredFields = [
             "fullName",
             "phone",
@@ -61,40 +57,45 @@ export default function OrderSummary({
                     quantity: item.quantity,
                 })),
 
-                shippingAddress: formData,
+                shippingAddress: {
+                    fullName: formData.fullName,
+                    phone: formData.phone,
+                    email: formData.email,
+                    address: formData.address,
+                    city: formData.city,
+                    state: formData.state,
+                    pincode: formData.pincode,
+                },
 
                 paymentMethod,
             };
 
+            console.log("Order Data:", orderData);
+
             const { data } = await createOrder(orderData);
 
-            console.log("Order Created:", data);
+            console.log("Order Response:", data);
 
-            if (!data.success || !data.order?._id) {
+            if (!data?.success) {
                 throw new Error(
-                    data.message || "Order creation failed"
+                    data?.message || "Order placement failed"
                 );
             }
 
-            // Clear cart only after successful order
             dispatch(clearCart());
 
-            // Send real order ID to success page
             navigate("/order-success", {
                 state: {
-                    orderId: data.order._id,
+                    order: data.order,
                 },
             });
 
         } catch (error) {
-            console.error(
-                "Place Order Error:",
-                error
-            );
+            console.error("Place Order Error:", error);
 
             alert(
-                error.response?.data?.message ||
-                error.message ||
+                error?.response?.data?.message ||
+                error?.message ||
                 "Failed to place order"
             );
         } finally {
@@ -167,13 +168,8 @@ export default function OrderSummary({
                 </div>
 
                 <div className="flex justify-between text-xl font-bold">
-
                     <span>Total</span>
-
-                    <span>
-                        ₹{total}
-                    </span>
-
+                    <span>₹{total}</span>
                 </div>
 
             </div>
@@ -183,9 +179,7 @@ export default function OrderSummary({
                 disabled={loading}
                 className="mt-8 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-                {loading
-                    ? "Placing Order..."
-                    : "Place Order"}
+                {loading ? "Placing Order..." : "Place Order"}
             </Button>
 
         </div>
