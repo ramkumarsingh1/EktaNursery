@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./api/authApi";
 import { setUser } from "./redux/auth/authSlice";
 import Profile from "./pages/Profile";
+import MyOrders from "./pages/MyOrders";
 export default function App() {
   const dispatch = useDispatch();
 
@@ -51,8 +52,8 @@ export default function App() {
         <Route
           path="/cart"
           element={
-            
-              <Cart />
+
+            <Cart />
           }
         />
         <Route
@@ -68,6 +69,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <OrderSuccess />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/my-orders"
+          element={
+            <ProtectedRoute>
+              <MyOrders />
             </ProtectedRoute>
           }
         />

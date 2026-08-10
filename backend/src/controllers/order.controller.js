@@ -147,3 +147,25 @@ export const createOrder = async (req, res) => {
         });
     }
 };
+export const getMyOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({
+            user: req.user._id,
+        })
+            .populate("items.product", "name price images")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: orders.length,
+            orders,
+        });
+    } catch (error) {
+        console.error("Get My Orders Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Failed to fetch orders",
+        });
+    }
+};
