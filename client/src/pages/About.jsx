@@ -3,27 +3,14 @@ import {
   FiAward,
   FiUsers,
 } from "react-icons/fi";
+import AboutHero from "../components/about/AboutHero";
 
 export default function About() {
   return (
     <div className="bg-gray-50">
 
       {/* Hero */}
-      <section className="bg-green-700 py-20 text-white">
-        <div className="mx-auto max-w-6xl px-6 text-center">
-
-          <h1 className="text-5xl font-bold">
-            About Ekta Nursery
-          </h1>
-
-          <p className="mx-auto mt-6 max-w-3xl text-lg text-green-100">
-            Bringing nature closer to every home by providing
-            healthy plants, premium gardening products,
-            and an enjoyable shopping experience.
-          </p>
-
-        </div>
-      </section>
+      <AboutHero/>
 
       {/* Our Story */}
 

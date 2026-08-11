@@ -25,6 +25,7 @@ import { getCurrentUser } from "./api/authApi";
 import { setUser } from "./redux/auth/authSlice";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
+import OrderDetails from "./pages/OrderDetails";
 export default function App() {
   const dispatch = useDispatch();
 
@@ -79,6 +80,10 @@ export default function App() {
               <MyOrders />
             </ProtectedRoute>
           }
+        />
+        <Route
+          path="/orders/:id"
+          element={<OrderDetails />}
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

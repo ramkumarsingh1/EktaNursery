@@ -1,7 +1,7 @@
 import express from "express";
 
 import { createOrder ,getMyOrders, createRazorpayOrder,
-    verifyRazorpayPayment,} from "../controllers/order.controller.js";
+    verifyRazorpayPayment,getOrderById,} from "../controllers/order.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -9,6 +9,7 @@ const router = express.Router();
 // Create Order
 router.post("/", verifyJWT, createOrder);
 router.get("/my-orders", verifyJWT, getMyOrders);
+router.get("/:id", verifyJWT, getOrderById);
 router.post(
     "/payment/create",
     verifyJWT,

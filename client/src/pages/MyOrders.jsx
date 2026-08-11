@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Container from "../components/layout/Container";
 import { getMyOrders } from "../api/orderApi";
-
+import { Link } from "react-router-dom";
 export default function MyOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -180,6 +180,16 @@ export default function MyOrders() {
                                         </span>
                                     </div>
 
+                                </div>
+
+                                {/* View Details */}
+                                <div className="mt-6 flex justify-end border-t pt-5">
+                                    <Link
+                                        to={`/orders/${order._id}`}
+                                        className="rounded-xl bg-green-700 px-6 py-3 font-semibold text-white transition hover:bg-green-800"
+                                    >
+                                        View Details
+                                    </Link>
                                 </div>
 
                             </div>

@@ -170,6 +170,44 @@ export const getMyOrders = async (req, res) => {
         });
     }
 };
+
+export const getOrderById = async (req, res) => {
+    try {
+        const order = await Order.findOne({
+            _id: req.params.id,
+            user: req.user._id,
+        })
+            .populate(
+                "items.product",
+                "name price images"
+            );
+
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            order,
+        });
+
+    } catch (error) {
+        console.error(
+            "Get Order By ID Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Failed to fetch order",
+        });
+    }
+};
 export const createRazorpayOrder = async (req, res) => {
     try {
         const { amount } = req.body;

@@ -1,8 +1,5 @@
 
-
 export default function PaymentMethod({paymentMethod,setPaymentMethod}) {
-
-
     return (
         <div className="mt-8 rounded-2xl border bg-white p-6 shadow-sm">
 

@@ -11,6 +11,9 @@ export const createOrder = (orderData) =>
 export const getMyOrders = () =>
     API.get("/orders/my-orders");
 
+export const getOrderById = (orderId) =>
+    API.get(`/orders/${orderId}`);
+
 export const createRazorpayOrder = (amount) =>
     API.post("/orders/payment/create", {
         amount,
