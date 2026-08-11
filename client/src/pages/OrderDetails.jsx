@@ -65,7 +65,7 @@ export default function OrderDetails() {
 
                 <div className="mb-8">
                     <Link
-                        to="/orders"
+                        to="/my-orders"
                         className="text-green-700 hover:underline"
                     >
                         ← Back to My Orders
