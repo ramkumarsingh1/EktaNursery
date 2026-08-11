@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Container from "../components/layout/Container";
-import { getOrderById } from "../api/orderApi";
+import { getOrderById, cancelOrder, } from "../api/orderApi";
 
 export default function OrderDetails() {
     const { id } = useParams();
@@ -29,6 +29,37 @@ export default function OrderDetails() {
 
         fetchOrder();
     }, [id]);
+    const handleCancelOrder = async () => {
+        const confirmed = window.confirm(
+            "Are you sure you want to cancel this order?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await cancelOrder(order._id);
+
+            setOrder((prev) => ({
+                ...prev,
+                orderStatus: "cancelled",
+            }));
+
+            alert("Order cancelled successfully");
+
+        } catch (error) {
+            console.error(
+                "Cancel Order Error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to cancel order"
+            );
+        }
+    };
 
     if (loading) {
         return (
@@ -97,6 +128,17 @@ export default function OrderDetails() {
                         <p className="mt-2 font-semibold capitalize text-green-700">
                             {order.orderStatus}
                         </p>
+
+                        {["placed", "confirmed"].includes(
+                            order.orderStatus
+                        ) && (
+                                <button
+                                    onClick={handleCancelOrder}
+                                    className="mt-4 rounded-lg border border-red-500 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50"
+                                >
+                                    Cancel Order
+                                </button>
+                            )}
                     </div>
 
                     <div className="rounded-xl border bg-white p-5 shadow-sm">
