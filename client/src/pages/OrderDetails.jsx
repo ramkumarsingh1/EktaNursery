@@ -39,15 +39,16 @@ export default function OrderDetails() {
         }
 
         try {
-            await cancelOrder(order._id);
+            const { data } = await cancelOrder(order._id);
 
-            setOrder((prev) => ({
-                ...prev,
-                orderStatus: "cancelled",
-            }));
+            if (data.success) {
+                setOrder(data.order);
 
-            alert("Order cancelled successfully");
-
+                alert(
+                    data.message ||
+                    "Order cancelled successfully"
+                );
+            }
         } catch (error) {
             console.error(
                 "Cancel Order Error:",

@@ -247,7 +247,7 @@ export const cancelOrder = async (req, res) => {
                 return res.status(400).json({
                     success: false,
                     message:
-                        "Payment ID not found for refund",
+                        "Razorpay payment ID not found",
                 });
             }
 
@@ -262,7 +262,7 @@ export const cancelOrder = async (req, res) => {
                 );
 
             console.log(
-                "Razorpay Refund:",
+                "Refund created:",
                 refund.id
             );
 
@@ -295,7 +295,7 @@ export const cancelOrder = async (req, res) => {
         return res.status(200).json({
             success: true,
             message:
-                "Order cancelled and refund initiated successfully",
+                "Order cancelled and refund processed successfully",
             order,
         });
 
