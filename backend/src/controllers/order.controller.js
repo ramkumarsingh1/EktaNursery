@@ -494,6 +494,8 @@ console.log("RAZORPAY SIGNATURE:", razorpay_signature);
 
             razorpayPaymentId: razorpay_payment_id,
 
+            razorpaySignature: razorpay_signature,
+
             orderStatus: "placed",
 
             subtotal,
