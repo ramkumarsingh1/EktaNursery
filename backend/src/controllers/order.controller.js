@@ -235,7 +235,44 @@ export const cancelOrder = async (req, res) => {
             });
         }
 
-        // Restore stock
+        // =========================
+        // ONLINE PAYMENT REFUND
+        // =========================
+
+        if (
+            order.paymentMethod === "online" &&
+            order.paymentStatus === "paid"
+        ) {
+            if (!order.razorpayPaymentId) {
+                return res.status(400).json({
+                    success: false,
+                    message:
+                        "Payment ID not found for refund",
+                });
+            }
+
+            const refund =
+                await razorpay.payments.refund(
+                    order.razorpayPaymentId,
+                    {
+                        amount: Math.round(
+                            order.totalAmount * 100
+                        ),
+                    }
+                );
+
+            console.log(
+                "Razorpay Refund:",
+                refund.id
+            );
+
+            order.paymentStatus = "refunded";
+        }
+
+        // =========================
+        // RESTORE STOCK
+        // =========================
+
         for (const item of order.items) {
             await Product.findByIdAndUpdate(
                 item.product,
@@ -247,16 +284,18 @@ export const cancelOrder = async (req, res) => {
             );
         }
 
-        order.orderStatus = "cancelled";
+        // =========================
+        // CANCEL ORDER
+        // =========================
 
-        // Online payment refund logic
-        // will be added later.
+        order.orderStatus = "cancelled";
 
         await order.save();
 
         return res.status(200).json({
             success: true,
-            message: "Order cancelled successfully",
+            message:
+                "Order cancelled and refund initiated successfully",
             order,
         });
 
@@ -274,6 +313,7 @@ export const cancelOrder = async (req, res) => {
         });
     }
 };
+
 export const createRazorpayOrder = async (req, res) => {
     try {
         const { amount } = req.body;
@@ -446,6 +486,10 @@ export const verifyRazorpayPayment = async (req, res) => {
             paymentMethod: "online",
 
             paymentStatus: "paid",
+
+            razorpayOrderId: razorpay_order_id,
+
+            razorpayPaymentId: razorpay_payment_id,
 
             orderStatus: "placed",
 
