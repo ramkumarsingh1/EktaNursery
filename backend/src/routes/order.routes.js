@@ -1,7 +1,9 @@
 import express from "express";
 
-import { createOrder ,getMyOrders, createRazorpayOrder,
-    verifyRazorpayPayment,getOrderById,} from "../controllers/order.controller.js";
+import {
+    createOrder, getMyOrders, createRazorpayOrder,
+    verifyRazorpayPayment, getOrderById, cancelOrder,
+} from "../controllers/order.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
@@ -9,6 +11,11 @@ const router = express.Router();
 // Create Order
 router.post("/", verifyJWT, createOrder);
 router.get("/my-orders", verifyJWT, getMyOrders);
+router.patch(
+    "/:id/cancel",
+    verifyJWT,
+    cancelOrder
+);
 router.get("/:id", verifyJWT, getOrderById);
 router.post(
     "/payment/create",

@@ -14,6 +14,9 @@ export const getMyOrders = () =>
 export const getOrderById = (orderId) =>
     API.get(`/orders/${orderId}`);
 
+export const cancelOrder = (orderId) =>
+    API.patch(`/orders/${orderId}/cancel`);
+
 export const createRazorpayOrder = (amount) =>
     API.post("/orders/payment/create", {
         amount,

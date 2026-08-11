@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Container from "../components/layout/Container";
 import { getMyOrders } from "../api/orderApi";
 import { Link } from "react-router-dom";
+import { cancelOrder } from "../api/orderApi";
 export default function MyOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,6 +31,45 @@ export default function MyOrders() {
 
         fetchOrders();
     }, []);
+
+    const handleCancelOrder = async (orderId) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to cancel this order?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await cancelOrder(orderId);
+
+            setOrders((prevOrders) =>
+                prevOrders.map((order) =>
+                    order._id === orderId
+                        ? {
+                            ...order,
+                            orderStatus: "cancelled",
+                        }
+                        : order
+                )
+            );
+
+            alert("Order cancelled successfully");
+
+        } catch (error) {
+            console.error(
+                "Cancel Order Error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to cancel order"
+            );
+        }
+    };
+
 
     if (loading) {
         return (
@@ -183,13 +223,28 @@ export default function MyOrders() {
                                 </div>
 
                                 {/* View Details */}
-                                <div className="mt-6 flex justify-end border-t pt-5">
+                                <div className="mt-6 flex justify-end gap-3 border-t pt-5">
+
                                     <Link
                                         to={`/orders/${order._id}`}
                                         className="rounded-xl bg-green-700 px-6 py-3 font-semibold text-white transition hover:bg-green-800"
                                     >
                                         View Details
                                     </Link>
+
+                                    {["placed", "confirmed"].includes(
+                                        order.orderStatus
+                                    ) && (
+                                            <button
+                                                onClick={() =>
+                                                    handleCancelOrder(order._id)
+                                                }
+                                                className="rounded-xl border border-red-500 px-6 py-3 font-semibold text-red-600 transition hover:bg-red-50"
+                                            >
+                                                Cancel Order
+                                            </button>
+                                        )}
+
                                 </div>
 
                             </div>

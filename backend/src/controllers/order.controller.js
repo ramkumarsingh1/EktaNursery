@@ -208,6 +208,72 @@ export const getOrderById = async (req, res) => {
         });
     }
 };
+
+export const cancelOrder = async (req, res) => {
+    try {
+        const order = await Order.findOne({
+            _id: req.params.id,
+            user: req.user._id,
+        });
+
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found",
+            });
+        }
+
+        if (
+            !["placed", "confirmed"].includes(
+                order.orderStatus
+            )
+        ) {
+            return res.status(400).json({
+                success: false,
+                message:
+                    "This order cannot be cancelled",
+            });
+        }
+
+        // Restore stock
+        for (const item of order.items) {
+            await Product.findByIdAndUpdate(
+                item.product,
+                {
+                    $inc: {
+                        stock: item.quantity,
+                    },
+                }
+            );
+        }
+
+        order.orderStatus = "cancelled";
+
+        // Online payment refund logic
+        // will be added later.
+
+        await order.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Order cancelled successfully",
+            order,
+        });
+
+    } catch (error) {
+        console.error(
+            "Cancel Order Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Failed to cancel order",
+        });
+    }
+};
 export const createRazorpayOrder = async (req, res) => {
     try {
         const { amount } = req.body;
