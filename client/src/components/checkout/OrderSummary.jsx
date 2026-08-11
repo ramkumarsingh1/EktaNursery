@@ -100,140 +100,144 @@ export default function OrderSummary({
         }
     };
 
-const handleOnlinePayment = async () => {
-    try {
-        // 1. Create Razorpay order from backend
-        const { data } = await createRazorpayOrder(total);
+    const handleOnlinePayment = async () => {
+        try {
+            // 1. Create Razorpay order from backend
+            const { data } = await createRazorpayOrder(total);
 
-        if (!data.success) {
-            throw new Error(
-                data.message ||
-                "Unable to create payment"
-            );
-        }
+            if (!data.success) {
+                throw new Error(
+                    data.message ||
+                    "Unable to create payment"
+                );
+            }
 
-        const razorpayOrder = data.order;
+            const razorpayOrder = data.order;
 
-        // 2. Razorpay Checkout
-        const options = {
-            key: import.meta.env
-                .VITE_RAZORPAY_KEY_ID,
+            // 2. Razorpay Checkout
+            const options = {
+                key: import.meta.env
+                    .VITE_RAZORPAY_KEY_ID,
 
-            amount: razorpayOrder.amount,
+                amount: razorpayOrder.amount,
 
-            currency: razorpayOrder.currency,
+                currency: razorpayOrder.currency,
 
-            name: "Ekta Nursery",
+                name: "Ekta Nursery",
 
-            description:
-                "Plant Order Payment",
+                description:
+                    "Plant Order Payment",
 
-            order_id: razorpayOrder.id,
+                order_id: razorpayOrder.id,
 
-            handler: async function (response) {
-                try {
-                    // 3. Verify payment + create order
-                    const verifyResponse =
-                        await verifyRazorpayPayment({
-                            razorpay_order_id:
-                                response.razorpay_order_id,
+                handler: async function (response) {
+                    try {
+                        // 3. Verify payment + create order
+                        const verifyResponse =
+                            await verifyRazorpayPayment({
+                                razorpay_order_id:
+                                    response.razorpay_order_id,
 
-                            razorpay_payment_id:
-                                response.razorpay_payment_id,
+                                razorpay_payment_id:
+                                    response.razorpay_payment_id,
 
-                            razorpay_signature:
-                                response.razorpay_signature,
+                                razorpay_signature:
+                                    response.razorpay_signature,
 
-                            items: cartItems.map(
-                                (item) => ({
-                                    product:
-                                        item._id,
-                                    quantity:
-                                        item.quantity,
-                                })
-                            ),
+                                items: cartItems.map(
+                                    (item) => ({
+                                        product:
+                                            item._id,
+                                        quantity:
+                                            item.quantity,
+                                    })
+                                ),
 
-                            shippingAddress:
-                                formData,
+                                shippingAddress:
+                                    formData,
+                            });
+
+                        if (
+                            !verifyResponse.data
+                                .success
+                        ) {
+                            throw new Error(
+                                "Payment verification failed"
+                            );
+                        }
+
+                        // 4. Order created successfully
+                        const createdOrder = verifyResponse.data.order;
+
+                        dispatch(clearCart());
+
+                        alert("Payment successful! Order placed successfully.");
+
+                        navigate("/order-success", {
+                            state: {
+                                orderId: createdOrder._id,
+                            },
                         });
 
-                    if (
-                        !verifyResponse.data
-                            .success
-                    ) {
-                        throw new Error(
+                    } catch (error) {
+                        console.error(
+                            "Payment Verification Error:",
+                            error
+                        );
+
+                        alert(
+                            error.response?.data
+                                ?.message ||
+                            error.message ||
                             "Payment verification failed"
                         );
                     }
+                },
 
-                    // 4. Order created successfully
-                    dispatch(clearCart());
+                prefill: {
+                    name: formData.fullName,
+                    email: formData.email,
+                    contact: formData.phone,
+                },
 
-                    alert(
-                        "Payment successful! Order placed successfully."
-                    );
+                theme: {
+                    color: "#15803d",
+                },
+            };
 
-                    navigate("/order-success");
+            const razorpay =
+                new window.Razorpay(options);
 
-                } catch (error) {
+            razorpay.on(
+                "payment.failed",
+                function (response) {
                     console.error(
-                        "Payment Verification Error:",
-                        error
+                        "Payment Failed:",
+                        response.error
                     );
 
                     alert(
-                        error.response?.data
-                            ?.message ||
-                        error.message ||
-                        "Payment verification failed"
+                        response.error?.description ||
+                        "Payment failed"
                     );
                 }
-            },
+            );
 
-            prefill: {
-                name: formData.fullName,
-                email: formData.email,
-                contact: formData.phone,
-            },
+            razorpay.open();
 
-            theme: {
-                color: "#15803d",
-            },
-        };
+        } catch (error) {
+            console.error(
+                "Razorpay Error:",
+                error
+            );
 
-        const razorpay =
-            new window.Razorpay(options);
-
-        razorpay.on(
-            "payment.failed",
-            function (response) {
-                console.error(
-                    "Payment Failed:",
-                    response.error
-                );
-
-                alert(
-                    response.error?.description ||
-                    "Payment failed"
-                );
-            }
-        );
-
-        razorpay.open();
-
-    } catch (error) {
-        console.error(
-            "Razorpay Error:",
-            error
-        );
-
-        alert(
-            error.response?.data?.message ||
-            error.message ||
-            "Unable to start payment"
-        );
-    }
-};
+            alert(
+                error.response?.data?.message ||
+                error.message ||
+                "Unable to start payment"
+            );
+        }
+    };
 
 
 
