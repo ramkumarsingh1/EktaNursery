@@ -205,14 +205,18 @@ export const createRazorpayOrder = async (req, res) => {
     }
 };
 
+
 export const verifyRazorpayPayment = async (req, res) => {
     try {
         const {
             razorpay_order_id,
             razorpay_payment_id,
             razorpay_signature,
+            items,
+            shippingAddress,
         } = req.body;
 
+        // Payment details validation
         if (
             !razorpay_order_id ||
             !razorpay_payment_id ||
@@ -224,6 +228,38 @@ export const verifyRazorpayPayment = async (req, res) => {
             });
         }
 
+        // Order data validation
+        if (
+            !items ||
+            !Array.isArray(items) ||
+            items.length === 0
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Order items are required",
+            });
+        }
+
+        const requiredAddressFields = [
+            "fullName",
+            "phone",
+            "email",
+            "address",
+            "city",
+            "state",
+            "pincode",
+        ];
+
+        for (const field of requiredAddressFields) {
+            if (!shippingAddress?.[field]) {
+                return res.status(400).json({
+                    success: false,
+                    message: `${field} is required`,
+                });
+            }
+        }
+
+        // Generate Razorpay signature
         const generatedSignature = crypto
             .createHmac(
                 "sha256",
@@ -234,6 +270,7 @@ export const verifyRazorpayPayment = async (req, res) => {
             )
             .digest("hex");
 
+        // Verify signature
         if (generatedSignature !== razorpay_signature) {
             return res.status(400).json({
                 success: false,
@@ -241,22 +278,122 @@ export const verifyRazorpayPayment = async (req, res) => {
             });
         }
 
+        // Create order items
+        const orderItems = [];
+        let subtotal = 0;
+
+        for (const item of items) {
+            if (!item.product || !item.quantity) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid order item",
+                });
+            }
+
+            const product = await Product.findById(
+                item.product
+            );
+
+            if (!product) {
+                return res.status(404).json({
+                    success: false,
+                    message: `Product not found: ${item.product}`,
+                });
+            }
+
+            // Stock check
+            if (product.stock < item.quantity) {
+                return res.status(400).json({
+                    success: false,
+                    message: `${product.name} has only ${product.stock} item(s) available`,
+                });
+            }
+
+            const itemTotal =
+                product.price * item.quantity;
+
+            subtotal += itemTotal;
+
+            orderItems.push({
+                product: product._id,
+                name: product.name,
+                price: product.price,
+                quantity: item.quantity,
+                image:
+                    product.images?.[0]?.url || "",
+            });
+        }
+
+        // Delivery charge
+        const deliveryCharge =
+            subtotal > 999 ? 0 : 99;
+
+        const totalAmount =
+            subtotal + deliveryCharge;
+
+        // Create paid order
+        const order = await Order.create({
+            user: req.user._id,
+
+            items: orderItems,
+
+            shippingAddress,
+
+            paymentMethod: "online",
+
+            paymentStatus: "paid",
+
+            orderStatus: "placed",
+
+            subtotal,
+
+            deliveryCharge,
+
+            totalAmount,
+        });
+
+        // Reduce stock
+        for (const item of items) {
+            await Product.findByIdAndUpdate(
+                item.product,
+                {
+                    $inc: {
+                        stock: -item.quantity,
+                    },
+                }
+            );
+        }
+
         return res.status(200).json({
             success: true,
-            message: "Payment verified successfully",
-            payment: {
-                razorpay_order_id,
-                razorpay_payment_id,
-                razorpay_signature,
+            message: "Payment verified and order created successfully",
+
+            order: {
+                _id: order._id,
+                totalAmount: order.totalAmount,
+                paymentMethod:
+                    order.paymentMethod,
+                paymentStatus:
+                    order.paymentStatus,
+                orderStatus:
+                    order.orderStatus,
+                createdAt:
+                    order.createdAt,
             },
         });
 
     } catch (error) {
-        console.error("Razorpay Verification Error:", error);
+        console.error(
+            "Razorpay Verification Error:",
+            error
+        );
 
         return res.status(500).json({
             success: false,
-            message: error.message || "Payment verification failed",
+            message:
+                error.message ||
+                "Payment verification failed",
         });
     }
 };
+
