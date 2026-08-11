@@ -360,6 +360,9 @@ export const verifyRazorpayPayment = async (req, res) => {
             shippingAddress,
         } = req.body;
 
+        console.log("RAZORPAY ORDER ID:", razorpay_order_id);
+console.log("RAZORPAY PAYMENT ID:", razorpay_payment_id);
+console.log("RAZORPAY SIGNATURE:", razorpay_signature);
         // Payment details validation
         if (
             !razorpay_order_id ||

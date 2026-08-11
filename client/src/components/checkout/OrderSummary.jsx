@@ -131,6 +131,7 @@ export default function OrderSummary({
                 order_id: razorpayOrder.id,
 
                 handler: async function (response) {
+                    console.log("RAZORPAY RESPONSE:", response);
                     try {
                         // 3. Verify payment + create order
                         const verifyResponse =
