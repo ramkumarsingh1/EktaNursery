@@ -99,7 +99,7 @@ const orderSchema = new mongoose.Schema(
 
         razorpaySignature: {
             type: String,
-            default: null,
+            default: "",
         },
 
         orderStatus: {
