@@ -41,3 +41,31 @@ export const verifyJWT = async (req, res, next) => {
     });
   }
 };
+
+export const verifyAdmin = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized Request",
+            });
+        }
+
+        if (req.user.role !== "admin") {
+            return res.status(403).json({
+                success: false,
+                message: "Admin access required",
+            });
+        }
+
+        next();
+
+    } catch (error) {
+        return res.status(403).json({
+            success: false,
+            message:
+                error.message ||
+                "Admin access denied",
+        });
+    }
+};

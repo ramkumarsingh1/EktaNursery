@@ -24,3 +24,12 @@ export const createRazorpayOrder = (amount) =>
 
 export const verifyRazorpayPayment = (paymentData) =>
     API.post("/orders/payment/verify", paymentData);
+
+export const getAllOrders = () =>
+    API.get("/orders/admin/all");
+
+export const updateOrderStatus = (orderId,status) =>
+    API.patch(
+        `/orders/admin/${orderId}/status`,
+        { status }
+    );

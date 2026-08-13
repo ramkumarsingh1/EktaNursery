@@ -2,9 +2,10 @@ import express from "express";
 
 import {
     createOrder, getMyOrders, createRazorpayOrder,
-    verifyRazorpayPayment, getOrderById, cancelOrder,
+    verifyRazorpayPayment, getOrderById, cancelOrder,getAllOrders,
+updateOrderStatus,
 } from "../controllers/order.controller.js";
-import { verifyJWT } from "../middleware/auth.middleware.js";
+import { verifyJWT,verifyAdmin, } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -27,5 +28,19 @@ router.post(
     "/payment/verify",
     verifyJWT,
     verifyRazorpayPayment
+);
+
+router.get(
+    "/admin/all",
+    verifyJWT,
+    verifyAdmin,
+    getAllOrders
+);
+
+router.patch(
+    "/admin/:id/status",
+    verifyJWT,
+    verifyAdmin,
+    updateOrderStatus
 );
 export default router;
