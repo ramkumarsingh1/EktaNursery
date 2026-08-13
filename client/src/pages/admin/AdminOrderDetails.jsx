@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Container from "../../components/layout/Container";
 import {
     getAdminOrderById,
+    updateOrderStatus,
 } from "../../api/orderApi";
 
 export default function AdminOrderDetails() {
@@ -12,6 +13,8 @@ export default function AdminOrderDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const [status, setStatus] = useState("");
+    const [updating, setUpdating] = useState(false);
     useEffect(() => {
         const fetchOrder = async () => {
             try {
@@ -22,6 +25,7 @@ export default function AdminOrderDetails() {
 
                 if (data.success) {
                     setOrder(data.order);
+                    setStatus(data.order.orderStatus);
                 }
             } catch (error) {
                 console.error(
@@ -40,6 +44,41 @@ export default function AdminOrderDetails() {
 
         fetchOrder();
     }, [id]);
+
+    const handleStatusUpdate = async () => {
+        try {
+            setUpdating(true);
+
+            const { data } = await updateOrderStatus(
+                id,
+                status
+            );
+
+            if (!data.success) {
+                throw new Error(
+                    data.message || "Failed to update status"
+                );
+            }
+
+            setOrder(data.order);
+
+            alert("Order status updated successfully");
+
+        } catch (error) {
+            console.error(
+                "Update Order Status Error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                error.message ||
+                "Failed to update order status"
+            );
+        } finally {
+            setUpdating(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -122,9 +161,52 @@ export default function AdminOrderDetails() {
                             Order Status
                         </h2>
 
-                        <span className="inline-block rounded-full bg-green-100 px-4 py-2 font-semibold capitalize text-green-700">
-                            {order.orderStatus}
-                        </span>
+                        <p className="mb-3 text-sm text-gray-500">
+                            Current:{" "}
+                            <span className="font-semibold capitalize text-gray-800">
+                                {order.orderStatus}
+                            </span>
+                        </p>
+
+                        <select
+                            value={status}
+                            onChange={(e) => setStatus(e.target.value)}
+                            className="w-full rounded-lg border px-3 py-2 outline-none focus:border-green-600"
+                        >
+                            <option value="placed">
+                                Placed
+                            </option>
+
+                            <option value="confirmed">
+                                Confirmed
+                            </option>
+
+                            <option value="processing">
+                                Processing
+                            </option>
+
+                            <option value="shipped">
+                                Shipped
+                            </option>
+
+                            <option value="delivered">
+                                Delivered
+                            </option>
+
+                            <option value="cancelled">
+                                Cancelled
+                            </option>
+                        </select>
+
+                        <button
+                            onClick={handleStatusUpdate}
+                            disabled={updating || status === order.orderStatus}
+                            className="mt-4 w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {updating
+                                ? "Updating..."
+                                : "Update Status"}
+                        </button>
                     </div>
 
                     {/* Payment */}
