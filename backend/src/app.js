@@ -6,6 +6,7 @@ import productRoutes from "./routes/product.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import dashboardRoutes from "./routes/dashboard.routes.js";
 const app = express();
 app.set("trust proxy", 1);
 app.use(
@@ -24,7 +25,7 @@ app.use("/api/v1/products", productRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/orders", orderRoutes);
-
+app.use("/api/v1/dashboard", dashboardRoutes);
 app.get("/", (req, res) => {
   res.json({
     success: true,
