@@ -10,7 +10,11 @@ export const getDashboardStats = async (req, res) => {
         });
 
         // Total orders
-        const totalOrders = await Order.countDocuments();
+        const totalOrders = await Order.countDocuments({
+            orderStatus: {
+                $ne: "cancelled",
+            },
+        });
 
         // Total customers
         const totalCustomers = await User.countDocuments({
