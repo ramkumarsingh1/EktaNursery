@@ -26,6 +26,7 @@ import { setUser } from "./redux/auth/authSlice";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
+import AdminOrders from "./pages/admin/AdminOrders";
 export default function App() {
   const dispatch = useDispatch();
 
@@ -110,6 +111,7 @@ export default function App() {
         <Route path="products" element={<Products />} />
         <Route path="products/add" element={<AddProduct />} />
         <Route path="products/edit/:id" element={<EditProduct />} />
+        <Route path="orders" element={<AdminOrders />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
