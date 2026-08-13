@@ -210,6 +210,42 @@ export const getOrderById = async (req, res) => {
     }
 };
 
+export const getAdminOrderById = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id)
+            .populate("user", "name email phone")
+            .populate(
+                "items.product",
+                "name price images"
+            );
+
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            order,
+        });
+
+    } catch (error) {
+        console.error(
+            "Get Admin Order By ID Error:",
+            error
+        );
+
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Failed to fetch order",
+        });
+    }
+};
+
 export const cancelOrder = async (req, res) => {
     try {
         const order = await Order.findOne({

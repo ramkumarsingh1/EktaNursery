@@ -28,8 +28,11 @@ export const verifyRazorpayPayment = (paymentData) =>
 export const getAllOrders = () =>
     API.get("/orders/admin/all");
 
-export const updateOrderStatus = (orderId,status) =>
+export const updateOrderStatus = (orderId, status) =>
     API.patch(
         `/orders/admin/${orderId}/status`,
         { status }
     );
+
+export const getAdminOrderById = (orderId) =>
+    API.get(`/orders/admin/${orderId}`);

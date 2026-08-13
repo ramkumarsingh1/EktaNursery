@@ -3,7 +3,7 @@ import express from "express";
 import {
     createOrder, getMyOrders, createRazorpayOrder,
     verifyRazorpayPayment, getOrderById, cancelOrder,getAllOrders,
-updateOrderStatus,
+updateOrderStatus,getAdminOrderById,
 } from "../controllers/order.controller.js";
 import { verifyJWT,verifyAdmin, } from "../middleware/auth.middleware.js";
 
@@ -35,6 +35,12 @@ router.get(
     verifyJWT,
     verifyAdmin,
     getAllOrders
+);
+router.get(
+    "/admin/:id",
+    verifyJWT,
+    verifyAdmin,
+    getAdminOrderById
 );
 
 router.patch(
