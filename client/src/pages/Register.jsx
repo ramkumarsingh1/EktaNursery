@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import { registerUser } from "../api/authApi";
-
+import { FiEye, FiEyeOff } from "react-icons/fi";
 export default function Register() {
     const [formData, setFormData] = useState({
         name: "",
@@ -16,6 +16,9 @@ export default function Register() {
         password: "",
         confirmPassword: "",
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -140,35 +143,77 @@ export default function Register() {
                     </div>
 
                     {/* Password */}
+                    {/* Password */}
                     <div>
                         <label className="mb-2 block font-medium">
                             Password
                         </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Enter password"
-                            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Enter password"
+                                className="w-full rounded-lg border px-4 py-3 pr-12 outline-none focus:border-green-600"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-700"
+                                aria-label={
+                                    showPassword
+                                        ? "Hide password"
+                                        : "Show password"
+                                }
+                            >
+                                {showPassword ? (
+                                    <FiEyeOff size={20} />
+                                ) : (
+                                    <FiEye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
+                    {/* Confirm Password */}
                     {/* Confirm Password */}
                     <div>
                         <label className="mb-2 block font-medium">
                             Confirm Password
                         </label>
 
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            placeholder="Confirm password"
-                            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showConfirmPassword ? "text" : "password"}
+                                name="confirmPassword"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                placeholder="Confirm password"
+                                className="w-full rounded-lg border px-4 py-3 pr-12 outline-none focus:border-green-600"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() =>
+                                    setShowConfirmPassword((prev) => !prev)
+                                }
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-700"
+                                aria-label={
+                                    showConfirmPassword
+                                        ? "Hide confirm password"
+                                        : "Show confirm password"
+                                }
+                            >
+                                {showConfirmPassword ? (
+                                    <FiEyeOff size={20} />
+                                ) : (
+                                    <FiEye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <button

@@ -8,7 +8,7 @@ import {
 
 import { loginUser } from "../api/authApi";
 import { useDispatch } from "react-redux";
-
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import {
     loginStart,
     loginSuccess,
@@ -21,6 +21,7 @@ export default function Login() {
         password: "",
     });
 
+    const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -96,14 +97,33 @@ export default function Login() {
                             Password
                         </label>
 
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Enter your password"
-                            className="w-full rounded-lg border px-4 py-3 outline-none focus:border-green-600"
-                        />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="Enter your password"
+                                className="w-full rounded-lg border px-4 py-3 pr-12 outline-none focus:border-green-600"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-green-700"
+                                aria-label={
+                                    showPassword
+                                        ? "Hide password"
+                                        : "Show password"
+                                }
+                            >
+                                {showPassword ? (
+                                    <FiEyeOff size={20} />
+                                ) : (
+                                    <FiEye size={20} />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <button
