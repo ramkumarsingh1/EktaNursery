@@ -1,14 +1,31 @@
-import nodemailer from "nodemailer";
+import axios from "axios";
 
-const transporter = nodemailer.createTransport({
-    host: process.env.BREVO_SMTP_HOST,
-    port: Number(process.env.BREVO_SMTP_PORT),
-    secure: false,
+const sendEmail = async ({ to, subject, html }) => {
+    const response = await axios.post(
+        "https://api.brevo.com/v3/smtp/email",
+        {
+            sender: {
+                name: "EktaNursery",
+                email: process.env.EMAIL_FROM,
+            },
+            to: [
+                {
+                    email: to,
+                },
+            ],
+            subject,
+            htmlContent: html,
+        },
+        {
+            headers: {
+                accept: "application/json",
+                "api-key": process.env.BREVO_API_KEY,
+                "content-type": "application/json",
+            },
+        }
+    );
 
-    auth: {
-        user: process.env.BREVO_SMTP_USER,
-        pass: process.env.BREVO_SMTP_PASS,
-    },
-});
+    return response.data;
+};
 
-export default transporter;
+export default sendEmail;

@@ -1,7 +1,7 @@
 import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
-import transporter from "../config/mail.js";
+import sendEmail from "../config/mail.js";
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, phone } = req.body;
@@ -47,14 +47,13 @@ export const registerUser = async (req, res) => {
       emailVerificationOTP: hashedOTP,
       emailVerificationExpiry: otpExpiry,
     });
-    
-    await transporter.sendMail({
-      from: `"EktaNursery" <${process.env.EMAIL_FROM}>`,
-      to: email,
-      subject: "Verify Your EktaNursery Email",
-      html: `
+    // send Email
+    await sendEmail({
+    to: email,
+    subject: "Verify Your EktaNursery Email",
+    html: `
         <div style="font-family: Arial, sans-serif;">
-            <h2>Welcome to EktaNursery 🌱</h2>
+            <h2>Welcome to EktaNursery</h2>
 
             <p>Your email verification OTP is:</p>
 
@@ -70,7 +69,7 @@ export const registerUser = async (req, res) => {
             </p>
         </div>
     `,
-    });
+});
     // Remove sensitive fields
     const createdUser = await User.findById(user._id).select(
       "-password -refreshToken"
