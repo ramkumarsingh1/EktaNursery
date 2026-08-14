@@ -19,6 +19,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "./api/authApi";
@@ -90,6 +91,10 @@ export default function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/verify-email"
+          element={<VerifyEmail />}
+        />
         <Route
           path="/profile"
           element={

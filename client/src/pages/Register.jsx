@@ -58,8 +58,9 @@ export default function Register() {
 
             const redirectTo = location.state?.from || "/";
 
-            navigate("/login", {
+            navigate("/verify-email", {
                 state: {
+                    email: formData.email,
                     from: redirectTo,
                 },
                 replace: true,

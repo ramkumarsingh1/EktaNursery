@@ -5,12 +5,15 @@ import {
     logoutUser,
     getCurrentUser,
     refreshAccessToken,
+    verifyEmail,
 } from "../controllers/auth.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 // Register User
 router.post("/register", registerUser);
+
+router.post("/verify-email", verifyEmail);
 
 //Login User
 router.post("/login", loginUser);

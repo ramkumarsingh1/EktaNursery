@@ -8,6 +8,13 @@ const API = axios.create({
 export const registerUser = (userData) =>
   API.post("/auth/register", userData);
 
+
+export const verifyEmail = (email, otp) =>
+    API.post("/auth/verify-email", {
+        email,
+        otp,
+    });
+    
 export const loginUser = (userData) =>
   API.post("/auth/login", userData);
 
