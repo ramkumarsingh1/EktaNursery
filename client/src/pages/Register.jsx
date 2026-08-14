@@ -53,7 +53,9 @@ export default function Register() {
             };
 
             const { data } = await registerUser(payload);
+            console.log("REGISTER RESPONSE:", data);
 
+            alert("Registration API successful");
             alert(data.message);
 
             const redirectTo = location.state?.from || "/";
