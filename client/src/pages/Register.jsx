@@ -37,6 +37,7 @@ export default function Register() {
             !formData.password ||
             !formData.confirmPassword
         ) {
+            console.log("VALIDATION FAILED", formData);
             return alert("Please fill all fields");
         }
 
