@@ -47,11 +47,9 @@ export const registerUser = async (req, res) => {
       emailVerificationOTP: hashedOTP,
       emailVerificationExpiry: otpExpiry,
     });
-    console.log("USER CREATED:", user._id);
-
-    console.log("ABOUT TO SEND EMAIL");
+    
     await transporter.sendMail({
-      from: `"EktaNursery" <${process.env.EMAIL_USER}>`,
+      from: `"EktaNursery" <${process.env.EMAIL_FROM}>`,
       to: email,
       subject: "Verify Your EktaNursery Email",
       html: `
@@ -73,7 +71,6 @@ export const registerUser = async (req, res) => {
         </div>
     `,
     });
-    console.log("EMAIL SENT SUCCESSFULLY");
     // Remove sensitive fields
     const createdUser = await User.findById(user._id).select(
       "-password -refreshToken"

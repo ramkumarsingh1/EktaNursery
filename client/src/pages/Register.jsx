@@ -29,7 +29,6 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("REGISTER SUBMIT CLICKED");
         if (
             !formData.name ||
             !formData.email ||
@@ -37,7 +36,6 @@ export default function Register() {
             !formData.password ||
             !formData.confirmPassword
         ) {
-            console.log("VALIDATION FAILED", formData);
             return alert("Please fill all fields");
         }
 
@@ -54,9 +52,7 @@ export default function Register() {
             };
 
             const { data } = await registerUser(payload);
-            console.log("REGISTER RESPONSE:", data);
 
-            alert("Registration API successful");
             alert(data.message);
 
             const redirectTo = location.state?.from || "/";
