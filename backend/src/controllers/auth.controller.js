@@ -47,12 +47,14 @@ export const registerUser = async (req, res) => {
       emailVerificationOTP: hashedOTP,
       emailVerificationExpiry: otpExpiry,
     });
+    console.log("USER CREATED:", user._id);
 
+    console.log("ABOUT TO SEND EMAIL");
     await transporter.sendMail({
-    from: `"EktaNursery" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: "Verify Your EktaNursery Email",
-    html: `
+      from: `"EktaNursery" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Verify Your EktaNursery Email",
+      html: `
         <div style="font-family: Arial, sans-serif;">
             <h2>Welcome to EktaNursery 🌱</h2>
 
@@ -70,8 +72,8 @@ export const registerUser = async (req, res) => {
             </p>
         </div>
     `,
-});
-
+    });
+    console.log("EMAIL SENT SUCCESSFULLY");
     // Remove sensitive fields
     const createdUser = await User.findById(user._id).select(
       "-password -refreshToken"
@@ -93,84 +95,84 @@ export const registerUser = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
-    try {
-        const { email, otp } = req.body;
+  try {
+    const { email, otp } = req.body;
 
-        // Validation
-        if (!email || !otp) {
-            return res.status(400).json({
-                success: false,
-                message: "Email and OTP are required",
-            });
-        }
-
-        // Find user
-        const user = await User.findOne({ email });
-
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-
-        // Already verified
-        if (user.isEmailVerified) {
-            return res.status(400).json({
-                success: false,
-                message: "Email is already verified",
-            });
-        }
-
-        // OTP expired
-        if (
-            !user.emailVerificationExpiry ||
-            user.emailVerificationExpiry < new Date()
-        ) {
-            return res.status(400).json({
-                success: false,
-                message: "OTP has expired",
-            });
-        }
-
-        // Hash entered OTP
-        const hashedOTP = crypto
-            .createHash("sha256")
-            .update(otp)
-            .digest("hex");
-
-        // Compare OTP
-        if (hashedOTP !== user.emailVerificationOTP) {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid OTP",
-            });
-        }
-
-        // Verify email
-        user.isEmailVerified = true;
-
-        // Clear OTP
-        user.emailVerificationOTP = "";
-        user.emailVerificationExpiry = null;
-
-        await user.save({
-            validateBeforeSave: false,
-        });
-
-        return res.status(200).json({
-            success: true,
-            message: "Email verified successfully",
-        });
-
-    } catch (error) {
-        console.error("Verify Email Error:", error);
-
-        return res.status(500).json({
-            success: false,
-            message: error.message || "Email verification failed",
-        });
+    // Validation
+    if (!email || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and OTP are required",
+      });
     }
+
+    // Find user
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // Already verified
+    if (user.isEmailVerified) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is already verified",
+      });
+    }
+
+    // OTP expired
+    if (
+      !user.emailVerificationExpiry ||
+      user.emailVerificationExpiry < new Date()
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired",
+      });
+    }
+
+    // Hash entered OTP
+    const hashedOTP = crypto
+      .createHash("sha256")
+      .update(otp)
+      .digest("hex");
+
+    // Compare OTP
+    if (hashedOTP !== user.emailVerificationOTP) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+
+    // Verify email
+    user.isEmailVerified = true;
+
+    // Clear OTP
+    user.emailVerificationOTP = "";
+    user.emailVerificationExpiry = null;
+
+    await user.save({
+      validateBeforeSave: false,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+    });
+
+  } catch (error) {
+    console.error("Verify Email Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Email verification failed",
+    });
+  }
 };
 
 export const loginUser = async (req, res) => {
@@ -207,12 +209,12 @@ export const loginUser = async (req, res) => {
 
     //Check Emailverify
     if (!user.isEmailVerified) {
-    return res.status(403).json({
+      return res.status(403).json({
         success: false,
         message: "Please verify your email before logging in",
         emailVerified: false,
-    });
-}
+      });
+    }
 
     // Generate Tokens
     const accessToken = user.generateAccessToken();
