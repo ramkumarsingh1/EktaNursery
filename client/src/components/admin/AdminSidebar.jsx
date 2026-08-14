@@ -4,6 +4,7 @@ import {
   FiPackage,
   FiShoppingBag,
   FiLogOut,
+  FiUsers,
 } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,11 @@ const menu = [
     path: "/admin/orders",
     icon: <FiShoppingBag />,
   },
+  {
+    title:"Customers",
+    path:"/admin/customers",
+    icon: <FiUsers />,
+  }
 ];
 
 export default function AdminSidebar() {

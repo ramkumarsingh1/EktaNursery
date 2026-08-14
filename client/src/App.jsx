@@ -28,6 +28,7 @@ import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
+import Customers from "./pages/admin/Customers";
 export default function App() {
   const dispatch = useDispatch();
 
@@ -117,6 +118,7 @@ export default function App() {
           path="orders/:id"
           element={<AdminOrderDetails />}
         />
+        <Route path="customers" element={<Customers />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

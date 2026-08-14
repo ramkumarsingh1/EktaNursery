@@ -34,3 +34,7 @@ export const updateAvatar = (formData) =>
       "Content-Type": "multipart/form-data",
     },
   });
+
+  // Admin
+export const getAllUsers = () =>
+    API.get("/user/admin/all");

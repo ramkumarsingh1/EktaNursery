@@ -46,8 +46,6 @@ export const updateUserProfile = async (req, res) => {
     }
 };
 
-
-
 export const changePassword = async (req, res) => {
     try {
         const { oldPassword, newPassword } = req.body;
@@ -125,4 +123,29 @@ export const updateAvatar = async (req, res) => {
       message: error.message,
     });
   }
+};
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({
+            role: "user",
+        })
+            .select("-password -refreshToken")
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: users.length,
+            users,
+        });
+    } catch (error) {
+        console.error("Get All Users Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message:
+                error.message ||
+                "Failed to fetch customers",
+        });
+    }
 };
