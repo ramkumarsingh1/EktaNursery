@@ -29,7 +29,7 @@ export default function Register() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log("REGISTER SUBMIT CLICKED");
         if (
             !formData.name ||
             !formData.email ||
