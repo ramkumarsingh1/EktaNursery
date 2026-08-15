@@ -8,6 +8,7 @@ import {
     verifyEmail,
     forgotPassword,
     verifyResetOTP,
+    resetPassword,
 } from "../controllers/auth.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
@@ -21,6 +22,8 @@ router.post("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
 
 router.post("/verify-reset-otp", verifyResetOTP);
+
+router.post("/reset-password", resetPassword);
 
 //Login User
 router.post("/login", loginUser);

@@ -10,14 +10,33 @@ export const registerUser = (userData) =>
 
 
 export const verifyEmail = (email, otp) =>
-    API.post("/auth/verify-email", {
-        email,
-        otp,
-    });
-    
+  API.post("/auth/verify-email", {
+    email,
+    otp,
+  });
+
+
 export const loginUser = (userData) =>
   API.post("/auth/login", userData);
 
+export const forgotPassword = (email) =>
+    API.post("/auth/forgot-password", {
+        email,
+    });
+
+export const verifyResetOTP = (email, otp) =>
+    API.post("/auth/verify-reset-otp", {
+        email,
+        otp,
+    });
+
+export const resetPassword = (email, otp, newPassword) =>
+    API.post("/auth/reset-password", {
+        email,
+        otp,
+        newPassword,
+    });
+    
 export const logoutUser = () =>
   API.post("/auth/logout");
 
@@ -29,7 +48,7 @@ export const refreshAccessToken = (refreshToken) =>
     refreshToken,
   });
 
-  export const updateProfile = (userData) =>
+export const updateProfile = (userData) =>
   API.put("/user/profile", userData);
 
 export const changePassword = (passwordData) =>
@@ -42,6 +61,6 @@ export const updateAvatar = (formData) =>
     },
   });
 
-  // Admin
+// Admin
 export const getAllUsers = () =>
-    API.get("/user/admin/all");
+  API.get("/user/admin/all");

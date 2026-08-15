@@ -30,6 +30,7 @@ import OrderDetails from "./pages/OrderDetails";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
 import Customers from "./pages/admin/Customers";
+import ForgotPassword from "./pages/ForgotPassword";
 export default function App() {
   const dispatch = useDispatch();
 
@@ -90,6 +91,7 @@ export default function App() {
           element={<OrderDetails />}
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword/>}/>
         <Route path="/register" element={<Register />} />
         <Route
           path="/verify-email"

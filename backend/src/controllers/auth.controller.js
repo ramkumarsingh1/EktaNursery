@@ -335,6 +335,95 @@ export const verifyResetOTP = async (req, res) => {
     }
 };
 
+export const resetPassword = async (req, res) => {
+    try {
+        const { email, otp, newPassword } = req.body;
+
+        // Validation
+        if (!email || !otp || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: "Email, OTP and new password are required",
+            });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 6 characters",
+            });
+        }
+
+        // Find user
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "Invalid or expired OTP",
+            });
+        }
+
+        // Check reset OTP
+        if (
+            !user.passwordResetOTP ||
+            !user.passwordResetExpiry
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired OTP",
+            });
+        }
+
+        // Check expiry
+        if (user.passwordResetExpiry < new Date()) {
+            return res.status(400).json({
+                success: false,
+                message: "OTP has expired",
+            });
+        }
+
+        // Hash entered OTP
+        const hashedOTP = crypto
+            .createHash("sha256")
+            .update(otp)
+            .digest("hex");
+
+        // Compare OTP
+        if (hashedOTP !== user.passwordResetOTP) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP",
+            });
+        }
+
+        // Update password
+        user.password = newPassword;
+
+        // Clear reset OTP
+        user.passwordResetOTP = "";
+        user.passwordResetExpiry = null;
+
+        // Invalidate existing refresh token
+        user.refreshToken = "";
+
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Password reset successfully",
+        });
+
+    } catch (error) {
+        console.error("Reset Password Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Password reset failed",
+        });
+    }
+};
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
