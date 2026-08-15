@@ -1,7 +1,7 @@
 export const initialState = {
     name: "",
     slug: "",
-    category: "Plant",
+    category: "Indoor Plant",
     description: "",
 
     price: "",
@@ -100,7 +100,7 @@ export function productFormReducer(state, action) {
 
                 slug: action.payload.slug || "",
 
-                category: action.payload.category || "Plant",
+                category: action.payload.category || "Indoor Plant",
 
                 description: action.payload.description || "",
 

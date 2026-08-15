@@ -167,17 +167,7 @@ export const getAllProducts = async (req, res) => {
 // POST /api/v1/products
 export const createProduct = async (req, res) => {
   try {
-    console.log("========== PRODUCT UPLOAD ==========");
-    console.log("FILES COUNT:", req.files?.length);
-    console.log(
-      "FILES:",
-      req.files?.map((file) => ({
-        originalname: file.originalname,
-        filename: file.filename,
-        path: file.path,
-      }))
-    );
-
+    
     const { name, slug, category, price, description } = req.body;
 
     if (
