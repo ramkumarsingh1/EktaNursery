@@ -200,7 +200,7 @@ export default function MobileDrawer({
                                 className={navLinkClass}
                             >
                                 <FiPackage />
-                                Orders
+                                My Orders
                             </NavLink>
                         </>
                     )}
