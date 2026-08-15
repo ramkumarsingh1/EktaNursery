@@ -31,6 +31,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminOrderDetails from "./pages/admin/AdminOrderDetails";
 import Customers from "./pages/admin/Customers";
 import ForgotPassword from "./pages/ForgotPassword";
+import ScrolltoTop from "./components/ScrollToTop"
 export default function App() {
   const dispatch = useDispatch();
 
@@ -48,6 +49,9 @@ export default function App() {
     fetchUser();
   }, [dispatch]);
   return (
+    <>
+    <ScrolltoTop/>
+
     <Routes>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
@@ -129,5 +133,7 @@ export default function App() {
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
+    
+    </>
   );
 }
