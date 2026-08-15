@@ -7,7 +7,7 @@ export default function Hero() {
   return (
     <section className="bg-green-50">
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 py-14">
 
           {/* Left */}
           <div>
@@ -16,7 +16,7 @@ export default function Hero() {
               Welcome to Ekta Nursery
             </p>
 
-            <h1 className="text-4xl lg:text-6xl font-bold leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
               Bring Nature
               <br />
               To Your Home 

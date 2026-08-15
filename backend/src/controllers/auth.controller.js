@@ -49,9 +49,9 @@ export const registerUser = async (req, res) => {
     });
     // send Email
     await sendEmail({
-    to: email,
-    subject: "Verify Your EktaNursery Email",
-    html: `
+      to: email,
+      subject: "Verify Your EktaNursery Email",
+      html: `
         <div style="font-family: Arial, sans-serif;">
             <h2>Welcome to EktaNursery</h2>
 
@@ -69,7 +69,7 @@ export const registerUser = async (req, res) => {
             </p>
         </div>
     `,
-});
+    });
     // Remove sensitive fields
     const createdUser = await User.findById(user._id).select(
       "-password -refreshToken"
@@ -169,6 +169,170 @@ export const verifyEmail = async (req, res) => {
       message: error.message || "Email verification failed",
     });
   }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Validation
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // Find user
+    const user = await User.findOne({ email });
+
+    // Generic response for security
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message:
+          "If an account exists with this email, a password reset OTP has been sent",
+      });
+    }
+
+    // Generate 6-digit OTP
+    const otp = crypto
+      .randomInt(100000, 1000000)
+      .toString();
+
+    // Hash OTP
+    const hashedOTP = crypto
+      .createHash("sha256")
+      .update(otp)
+      .digest("hex");
+
+    // OTP expiry - 10 minutes
+    const otpExpiry = new Date(
+      Date.now() + 10 * 60 * 1000
+    );
+
+    // Save reset OTP
+    user.passwordResetOTP = hashedOTP;
+    user.passwordResetExpiry = otpExpiry;
+
+    await user.save({
+      validateBeforeSave: false,
+    });
+
+    // Send OTP through Brevo HTTP API
+    await sendEmail({
+      to: email,
+      subject: "Reset Your EktaNursery Password",
+      html: `
+                <div style="font-family: Arial, sans-serif;">
+                    <h2>EktaNursery Password Reset</h2>
+
+                    <p>
+                        We received a request to reset your password.
+                    </p>
+
+                    <p>Your password reset OTP is:</p>
+
+                    <h1 style="letter-spacing: 8px;">
+                        ${otp}
+                    </h1>
+
+                    <p>
+                        This OTP will expire in 10 minutes.
+                    </p>
+
+                    <p>
+                        If you did not request a password reset,
+                        you can safely ignore this email.
+                    </p>
+                </div>
+            `,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message:
+        "If an account exists with this email, a password reset OTP has been sent",
+    });
+
+  } catch (error) {
+    console.error("Forgot Password Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to process password reset",
+    });
+  }
+};
+
+export const verifyResetOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        // Validation
+        if (!email || !otp) {
+            return res.status(400).json({
+                success: false,
+                message: "Email and OTP are required",
+            });
+        }
+
+        // Find user
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "Invalid or expired OTP",
+            });
+        }
+
+        // Check OTP exists
+        if (
+            !user.passwordResetOTP ||
+            !user.passwordResetExpiry
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid or expired OTP",
+            });
+        }
+
+        // Check expiry
+        if (user.passwordResetExpiry < new Date()) {
+            return res.status(400).json({
+                success: false,
+                message: "OTP has expired",
+            });
+        }
+
+        // Hash entered OTP
+        const hashedOTP = crypto
+            .createHash("sha256")
+            .update(otp)
+            .digest("hex");
+
+        // Compare OTP
+        if (hashedOTP !== user.passwordResetOTP) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid OTP",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "OTP verified successfully",
+        });
+
+    } catch (error) {
+        console.error("Verify Reset OTP Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: error.message || "OTP verification failed",
+        });
+    }
 };
 
 export const loginUser = async (req, res) => {

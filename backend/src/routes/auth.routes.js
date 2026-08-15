@@ -6,6 +6,8 @@ import {
     getCurrentUser,
     refreshAccessToken,
     verifyEmail,
+    forgotPassword,
+    verifyResetOTP,
 } from "../controllers/auth.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
@@ -14,6 +16,11 @@ const router = express.Router();
 router.post("/register", registerUser);
 
 router.post("/verify-email", verifyEmail);
+
+// forget password
+router.post("/forgot-password", forgotPassword);
+
+router.post("/verify-reset-otp", verifyResetOTP);
 
 //Login User
 router.post("/login", loginUser);
