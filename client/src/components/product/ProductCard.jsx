@@ -92,7 +92,7 @@ export default function ProductCard({ product }) {
         e.stopPropagation();
 
         dispatch(addToCart(product));
-        toast.success("Test successful");
+        toast.success("Item Added");
     };
 
     return (
