@@ -185,17 +185,17 @@ export default function MobileDrawer({
                                 My Profile
                             </NavLink>
 
-                            <NavLink
+                            {/* <NavLink
                                 to="/wishlist"
                                 onClick={() => setIsOpen(false)}
                                 className={navLinkClass}
                             >
                                 <FiHeart />
                                 Wishlist
-                            </NavLink>
+                            </NavLink> */}
 
                             <NavLink
-                                to="/orders"
+                                to="/my-orders"
                                 onClick={() => setIsOpen(false)}
                                 className={navLinkClass}
                             >

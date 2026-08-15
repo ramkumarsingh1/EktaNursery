@@ -271,7 +271,7 @@ export default function Navbar() {
                                             </Link>
 
                                             {/* Wishlist */}
-                                            <Link
+                                            {/* <Link
                                                 to="/wishlist"
                                                 onClick={() =>
                                                     setIsUserMenuOpen(false)
@@ -279,7 +279,7 @@ export default function Navbar() {
                                                 className="block px-5 py-3 hover:bg-gray-100"
                                             >
                                                 Wishlist
-                                            </Link>
+                                            </Link> */}
 
                                             {/* Logout */}
                                             <div className="border-t">
