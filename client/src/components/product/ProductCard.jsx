@@ -83,7 +83,7 @@ import Button from "../ui/Button";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
-
+import toast from "react-hot-toast";
 export default function ProductCard({ product }) {
     const dispatch = useDispatch();
 
@@ -92,6 +92,7 @@ export default function ProductCard({ product }) {
         e.stopPropagation();
 
         dispatch(addToCart(product));
+        toast.success("Test successful");
     };
 
     return (
@@ -126,9 +127,9 @@ export default function ProductCard({ product }) {
                     </h3>
 
                     {/* Rating + Price */}
-                    <div className="mt-1.5 flex items-center justify-between gap-2">
+                    <div className="mt-0.5 flex items-center justify-between gap-2">
 
-                        <span className="rounded bg-green-600 px-1.5 py-0.5 text-[11px] font-medium text-white">
+                        <span className="rounded bg-yellow-200 px-1.5 py-0.5 text-[11px] font-medium text-white">
                             ⭐ {product.rating || 0}
                         </span>
 
