@@ -8,6 +8,7 @@ import {
     createRazorpayOrder,
     verifyRazorpayPayment,
 } from "../../api/orderApi";
+import toast from "react-hot-toast";
 
 export default function OrderSummary({
     formData,
@@ -44,7 +45,7 @@ export default function OrderSummary({
 
         for (const field of requiredFields) {
             if (!formData[field]?.trim()) {
-                alert(
+                toast.error(
                     `Please enter ${field}`
                 );
                 return false;
@@ -52,7 +53,7 @@ export default function OrderSummary({
         }
 
         if (cartItems.length === 0) {
-            alert("Your cart is empty");
+            toast.error("Your cart is empty");
             return false;
         }
 
@@ -92,7 +93,7 @@ export default function OrderSummary({
                 error
             );
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 error.message ||
                 "Failed to place order"
@@ -131,7 +132,7 @@ export default function OrderSummary({
                 order_id: razorpayOrder.id,
 
                 handler: async function (response) {
-                    console.log("RAZORPAY RESPONSE:", response);
+                
                     try {
                         // 3. Verify payment + create order
                         const verifyResponse =
@@ -172,7 +173,7 @@ export default function OrderSummary({
 
                         dispatch(clearCart());
 
-                        alert("Payment successful! Order placed successfully.");
+                        toast.success("Payment successful! Order placed successfully.");
 
                         navigate("/order-success", {
                             state: {
@@ -186,7 +187,7 @@ export default function OrderSummary({
                             error
                         );
 
-                        alert(
+                        toast.error(
                             error.response?.data
                                 ?.message ||
                             error.message ||
@@ -217,7 +218,7 @@ export default function OrderSummary({
                         response.error
                     );
 
-                    alert(
+                    toast.error(
                         response.error?.description ||
                         "Payment failed"
                     );
@@ -232,7 +233,7 @@ export default function OrderSummary({
                 error
             );
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 error.message ||
                 "Unable to start payment"
