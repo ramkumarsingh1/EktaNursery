@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
-import Button from "../ui/Button";
 import { Link } from "react-router-dom";
+
 export default function CartSummary() {
-    const cartItems = useSelector((state) => state.cart.items);
+    const cartItems = useSelector(
+        (state) => state.cart.items
+    );
 
     const subtotal = cartItems.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) =>
+            total + item.price * item.quantity,
         0
     );
 
@@ -13,49 +16,89 @@ export default function CartSummary() {
 
     const gst = Math.round(subtotal * 0.18);
 
-    const grandTotal = subtotal + delivery + gst;
+    const grandTotal =
+        subtotal + delivery + gst;
 
     return (
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 sm:rounded-xl sm:p-5">
 
-            <h2 className="text-2xl font-bold">
-                Order Summary
+            {/* Heading */}
+            <h2 className="text-base font-semibold text-gray-800 sm:text-lg">
+                Price Details
             </h2>
 
-            <div className="mt-6 space-y-4">
 
-                <div className="flex justify-between">
-                    <span>Subtotal</span>
-                    <span>₹{subtotal}</span>
-                </div>
+            {/* Price Details */}
+            <div className="mt-3 space-y-2.5 text-sm">
 
-                <div className="flex justify-between">
-                    <span>Delivery</span>
+                {/* Subtotal */}
+                <div className="flex items-center justify-between">
+                    <span className="text-gray-600">
+                        Subtotal
+                    </span>
 
-                    <span className={delivery === 0 ? "text-green-700 font-semibold" : ""}>
-                        {delivery === 0 ? "FREE" : `₹${delivery}`}
+                    <span className="font-medium text-gray-800">
+                        ₹{subtotal}
                     </span>
                 </div>
 
-                <div className="flex justify-between">
-                    <span>GST (18%)</span>
-                    <span>₹{gst}</span>
+
+                {/* Delivery */}
+                <div className="flex items-center justify-between">
+                    <span className="text-gray-600">
+                        Delivery
+                    </span>
+
+                    <span
+                        className={
+                            delivery === 0
+                                ? "font-medium text-green-700"
+                                : "font-medium text-gray-800"
+                        }
+                    >
+                        {delivery === 0
+                            ? "FREE"
+                            : `₹${delivery}`}
+                    </span>
                 </div>
 
-                <hr />
 
-                <div className="flex justify-between text-xl font-bold">
-                    <span>Total</span>
-                    <span className="text-green-700">
-                        ₹{grandTotal}
+                {/* GST */}
+                <div className="flex items-center justify-between">
+                    <span className="text-gray-600">
+                        GST (18%)
+                    </span>
+
+                    <span className="font-medium text-gray-800">
+                        ₹{gst}
                     </span>
                 </div>
 
             </div>
 
+
+            {/* Divider */}
+            <div className="my-3 border-t border-dashed border-gray-300" />
+
+
+            {/* Total */}
+            <div className="flex items-center justify-between">
+
+                <span className="text-base font-semibold text-gray-800">
+                    Total
+                </span>
+
+                <span className="text-lg font-bold text-green-700">
+                    ₹{grandTotal}
+                </span>
+
+            </div>
+
+
+            {/* Checkout */}
             <Link
                 to="/checkout"
-                className="mt-2 block w-full rounded-xl bg-green-700 py-3 text-center font-semibold text-white hover:bg-green-800"
+                className="mt-3 block w-full rounded-md bg-green-700 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-green-800 sm:py-3"
             >
                 Proceed to Checkout
             </Link>
