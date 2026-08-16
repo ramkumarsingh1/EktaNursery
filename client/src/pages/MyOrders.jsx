@@ -3,6 +3,7 @@ import Container from "../components/layout/Container";
 import { getMyOrders } from "../api/orderApi";
 import { Link } from "react-router-dom";
 import { cancelOrder } from "../api/orderApi";
+import toast from "react-hot-toast";
 export default function MyOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,8 +19,7 @@ export default function MyOrders() {
 
                 setOrders(data.orders || []);
             } catch (error) {
-                console.error("Failed to fetch orders:", error);
-
+                
                 setError(
                     error.response?.data?.message ||
                     "Unable to load orders"
@@ -55,15 +55,11 @@ export default function MyOrders() {
                 )
             );
 
-            alert("Order cancelled successfully");
+            toast.success("Order cancelled successfully");
 
         } catch (error) {
-            console.error(
-                "Cancel Order Error:",
-                error
-            );
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Failed to cancel order"
             );

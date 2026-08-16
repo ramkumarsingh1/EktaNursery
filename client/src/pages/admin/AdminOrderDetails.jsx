@@ -5,6 +5,7 @@ import {
     getAdminOrderById,
     updateOrderStatus,
 } from "../../api/orderApi";
+import toast from "react-hot-toast";
 
 export default function AdminOrderDetails() {
     const { id } = useParams();
@@ -62,7 +63,7 @@ export default function AdminOrderDetails() {
 
             setOrder(data.order);
 
-            alert("Order status updated successfully");
+            toast.success("Order status updated successfully");
 
         } catch (error) {
             console.error(
@@ -70,7 +71,7 @@ export default function AdminOrderDetails() {
                 error
             );
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 error.message ||
                 "Failed to update order status"

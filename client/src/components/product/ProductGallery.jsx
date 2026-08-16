@@ -13,7 +13,7 @@ export default function ProductGallery({
                 className="h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80 lg:h-[450px]"
             />
 
-            <div className="mt-2 flex gap-3 overflow-x-auto">
+            <div className="mt-2 flex gap-2 overflow-x-auto">
 
                 {images.map((image, index) => (
 
@@ -26,7 +26,7 @@ export default function ProductGallery({
 
                         ${
                             selectedImage === image
-                                ? "border-green-700"
+                                ? "border-yellow-700"
                                 : "border-gray-300"
                         }`}
                     />

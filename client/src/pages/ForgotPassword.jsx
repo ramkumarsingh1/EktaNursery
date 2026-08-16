@@ -5,7 +5,7 @@ import {
     verifyResetOTP,
     resetPassword,
 } from "../api/authApi";
-
+import toast from "react-hot-toast";
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
@@ -25,7 +25,7 @@ export default function ForgotPassword() {
         e.preventDefault();
 
         if (!email) {
-            return alert("Please enter your email");
+            return toast.error("Please enter your email");
         }
 
         try {
@@ -33,14 +33,13 @@ export default function ForgotPassword() {
 
             const { data } = await forgotPassword(email);
 
-            alert(data.message);
+            toast.success(data.message);
 
             setOtpSent(true);
 
         } catch (error) {
-            console.error("Forgot Password Error:", error);
-
-            alert(
+            
+            toast.error(
                 error.response?.data?.message ||
                 "Something went wrong"
             );
@@ -54,11 +53,11 @@ export default function ForgotPassword() {
         e.preventDefault();
 
         if (!otp) {
-            return alert("Please enter OTP");
+            return toast.error("Please enter OTP");
         }
 
         if (otp.length !== 6) {
-            return alert("OTP must be 6 digits");
+            return toast.error("OTP must be 6 digits");
         }
 
         try {
@@ -66,14 +65,13 @@ export default function ForgotPassword() {
 
             const { data } = await verifyResetOTP(email, otp);
 
-            alert(data.message);
+            toast.success(data.message);
 
             setOtpVerified(true);
 
         } catch (error) {
-            console.error("Verify Reset OTP Error:", error);
-
-            alert(
+           
+            toast.error(
                 error.response?.data?.message ||
                 "Invalid OTP"
             );
@@ -87,15 +85,15 @@ export default function ForgotPassword() {
         e.preventDefault();
 
         if (!newPassword || !confirmPassword) {
-            return alert("Please fill both password fields");
+            return toast.error("Please fill both password fields");
         }
 
         if (newPassword.length < 6) {
-            return alert("Password must be at least 6 characters");
+            return toast.error("Password must be at least 6 characters");
         }
 
         if (newPassword !== confirmPassword) {
-            return alert("Passwords do not match");
+            return toast.error("Passwords do not match");
         }
 
         try {
@@ -107,16 +105,15 @@ export default function ForgotPassword() {
                 newPassword
             );
 
-            alert(data.message);
+            toast.success(data.message);
 
             navigate("/login", {
                 replace: true,
             });
 
         } catch (error) {
-            console.error("Reset Password Error:", error);
-
-            alert(
+           
+            toast.error(
                 error.response?.data?.message ||
                 "Password reset failed"
             );

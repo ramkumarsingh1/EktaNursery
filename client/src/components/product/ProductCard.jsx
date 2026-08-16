@@ -129,7 +129,7 @@ export default function ProductCard({ product }) {
                     {/* Rating + Price */}
                     <div className="mt-0.5 flex items-center justify-between gap-2">
 
-                        <span className="rounded bg-yellow-200 px-1.5 py-0.5 text-[11px] font-medium text-white">
+                        <span className="rounded bg-yellow-100 px-1.5 py-0.5 text-[11px] font-medium text-yellow-700">
                             ⭐ {product.rating || 0}
                         </span>
 

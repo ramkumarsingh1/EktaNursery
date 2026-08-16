@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { verifyEmail } from "../api/authApi";
-
+import toast from "react-hot-toast";
 export default function VerifyEmail() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -16,15 +16,15 @@ export default function VerifyEmail() {
         e.preventDefault();
 
         if (!email) {
-            return alert("Email information is missing");
+            return toast.error("Email information is missing");
         }
 
         if (!otp) {
-            return alert("Please enter OTP");
+            return toast.error("Please enter OTP");
         }
 
         if (otp.length !== 6) {
-            return alert("OTP must be 6 digits");
+            return toast.error("OTP must be 6 digits");
         }
 
         try {
@@ -32,7 +32,7 @@ export default function VerifyEmail() {
 
             const { data } = await verifyEmail(email, otp);
 
-            alert(data.message);
+            toast.success(data.message);
 
             navigate("/login", {
                 state: {
@@ -42,9 +42,8 @@ export default function VerifyEmail() {
                 replace: true,
             });
         } catch (error) {
-            console.error("Verify Email Error:", error);
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Email verification failed"
             );
@@ -94,7 +93,7 @@ export default function VerifyEmail() {
                                 )
                             }
                             placeholder="Enter 6-digit OTP"
-                            className="w-full rounded-lg border px-4 py-3 text-center text-xl tracking-[0.5em] outline-none focus:border-green-600"
+                            className="w-full rounded-lg border px-4 py-3 text-center text-4xl tracking-[0.5em] outline-none focus:border-green-600"
                         />
                     </div>
 

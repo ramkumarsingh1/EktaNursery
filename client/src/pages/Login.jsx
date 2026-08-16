@@ -14,7 +14,7 @@ import {
     loginSuccess,
     loginFailure,
 } from "../redux/auth/authSlice";
-
+import toast from "react-hot-toast";
 export default function Login() {
     const [formData, setFormData] = useState({
         email: "",
@@ -43,21 +43,22 @@ export default function Login() {
 
             dispatch(loginSuccess(data.user));
 
-            alert("Login Successful");
+            toast.success("Login successfully");
 
             const redirectTo = location.state?.from || "/";
 
             navigate(redirectTo, { replace: true });
 
-            console.log(data);
         } catch (error) {
             dispatch(loginFailure());
 
-            console.error(error);
-
-            alert(
+            // alert(
+            //     error.response?.data?.message ||
+            //     "Login Failed"
+            // );
+            toast.error(
                 error.response?.data?.message ||
-                "Login Failed"
+                "Login failed"
             );
         }
     };
@@ -124,7 +125,7 @@ export default function Login() {
                                 )}
                             </button>
                         </div>
-                        
+
                         <div className="text-right">
                             <Link
                                 to="/forgot-password"

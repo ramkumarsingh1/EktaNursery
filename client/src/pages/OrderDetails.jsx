@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Container from "../components/layout/Container";
 import { getOrderById, cancelOrder, } from "../api/orderApi";
-
+import toast from "react-hot-toast";
 export default function OrderDetails() {
     const { id } = useParams();
 
@@ -44,18 +44,14 @@ export default function OrderDetails() {
             if (data.success) {
                 setOrder(data.order);
 
-                alert(
+                toast.success(
                     data.message ||
                     "Order cancelled successfully"
                 );
             }
         } catch (error) {
-            console.error(
-                "Cancel Order Error:",
-                error
-            );
-
-            alert(
+           
+            toast.error(
                 error.response?.data?.message ||
                 "Failed to cancel order"
             );

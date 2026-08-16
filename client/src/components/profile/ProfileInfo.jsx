@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { updateProfile } from "../../api/authApi";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/auth/authSlice";
+import toast from "react-hot-toast";
 export default function ProfileInfo() {
     const { user } = useSelector((state) => state.auth);
 
@@ -40,10 +41,10 @@ export default function ProfileInfo() {
 
             dispatch(setUser(data.user));
 
-            alert(data.message);
+            toast.success(data.message);
 
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Profile Update Failed"
             );

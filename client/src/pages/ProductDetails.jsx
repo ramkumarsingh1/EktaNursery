@@ -44,8 +44,7 @@ export default function ProductDetails() {
 
                 setSelectedImage(imageUrls[0] || "");
             } catch (error) {
-                console.error("Failed to fetch product:", error);
-
+               
                 setProduct(null);
                 setError(
                     error?.response?.data?.message ||

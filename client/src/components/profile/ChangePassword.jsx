@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../../api/authApi";
 import { logout } from "../../redux/auth/authSlice";
+import toast from "react-hot-toast";
 export default function ChangePassword() {
     const [formData, setFormData] = useState({
         oldPassword: "",
@@ -23,7 +24,7 @@ export default function ChangePassword() {
         e.preventDefault();
 
         if (formData.newPassword !== formData.confirmPassword) {
-            return alert("Passwords do not match");
+            return toast.error("Passwords do not match");
         }
 
         try {
@@ -32,7 +33,7 @@ export default function ChangePassword() {
                 newPassword: formData.newPassword,
             });
 
-            alert(data.message);
+            toast.success(data.message);
 
             setFormData({
                 oldPassword: "",
@@ -46,7 +47,7 @@ export default function ChangePassword() {
 
             navigate("/login");
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Password Change Failed"
             );

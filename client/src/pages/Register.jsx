@@ -8,6 +8,7 @@ import {
 
 import { registerUser } from "../api/authApi";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import toast from "react-hot-toast";
 export default function Register() {
     const [formData, setFormData] = useState({
         name: "",
@@ -39,11 +40,11 @@ export default function Register() {
             !formData.password ||
             !formData.confirmPassword
         ) {
-            return alert("Please fill all fields");
+            return toast.error("Please fill all fields");
         }
 
         if (formData.password !== formData.confirmPassword) {
-            return alert("Passwords do not match");
+            return toast.error("Passwords do not match");
         }
 
         try {
@@ -56,7 +57,8 @@ export default function Register() {
 
             const { data } = await registerUser(payload);
 
-            alert(data.message);
+            // toast.success(data.message);
+            toast.success("Account created successfully!");
 
             const redirectTo = location.state?.from || "/";
 
@@ -68,24 +70,22 @@ export default function Register() {
                 replace: true,
             });
         } catch (error) {
-            console.error(error);
-
-            alert(
+            toast.error(
                 error.response?.data?.message ||
-                "Registration Failed"
+                "Registration failed"
             );
         }
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-10">
+        <div className="flex min-h-screen items-center justify-center bg-green-50 px-4 py-5">
             <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
 
                 <h1 className="mb-2 text-center text-3xl font-bold text-green-700">
                     Create Account
                 </h1>
 
-                <p className="mb-8 text-center text-gray-500">
+                <p className="mb-6 text-center text-gray-500">
                     Join Ekta Nursery and start shopping
                 </p>
 

@@ -3,6 +3,7 @@ import { FiUser } from "react-icons/fi";
 import { useState } from "react";
 import { updateAvatar } from "../../api/authApi";
 import { setUser } from "../../redux/auth/authSlice";
+import toast from "react-hot-toast";
 export default function AvatarUpload() {
     const [avatar, setAvatar] = useState(null);
     const [preview, setPreview] = useState(null);
@@ -20,7 +21,7 @@ export default function AvatarUpload() {
     };
     const handleUpload = async () => {
         if (!avatar) {
-            return alert("Please select an image");
+            return toast.error("Please select an image");
         }
 
         try {
@@ -40,10 +41,10 @@ export default function AvatarUpload() {
             setPreview(null);
             setAvatar(null);
 
-            alert(data.message);
+            toast.success(data.message);
 
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Avatar Upload Failed"
             );

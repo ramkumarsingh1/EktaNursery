@@ -51,9 +51,9 @@ export default function Shop() {
 
     const PRODUCTS_PER_PAGE = 6;
 
-    // --------------------------------
+  
     // SEARCH DEBOUNCE
-    // --------------------------------
+   
     useEffect(() => {
         const timer = setTimeout(() => {
             setSearchTerm(searchInput.trim());
@@ -65,9 +65,9 @@ export default function Shop() {
         };
     }, [searchInput]);
 
-    // --------------------------------
+   
     // FETCH PRODUCTS
-    // --------------------------------
+   
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -130,9 +130,9 @@ export default function Shop() {
         priceRange,
     ]);
 
-    // --------------------------------
+ 
     // CATEGORIES
-    // --------------------------------
+   
     const categories = [
         "All",
         ...categoryStats.map(
@@ -140,9 +140,9 @@ export default function Shop() {
         ),
     ];
 
-    // --------------------------------
+  
     // CATEGORY COUNTS
-    // --------------------------------
+   
     const categoryCounts =
         categoryStats.reduce(
             (acc, item) => {
@@ -152,9 +152,9 @@ export default function Shop() {
             {}
         );
 
-    // --------------------------------
+   
     // CATEGORY CHANGE
-    // --------------------------------
+   
     const handleCategoryChange = (
         category
     ) => {
@@ -162,9 +162,9 @@ export default function Shop() {
         setCurrentPage(1);
     };
 
-    // --------------------------------
+ 
     // PRICE CHANGE
-    // --------------------------------
+   
     const handlePriceChange = (
         price
     ) => {
@@ -172,9 +172,9 @@ export default function Shop() {
         setCurrentPage(1);
     };
 
-    // --------------------------------
+  
     // SORT CHANGE
-    // --------------------------------
+    
     const handleSortChange = (
         value
     ) => {
@@ -183,9 +183,9 @@ export default function Shop() {
     };
 
 
-    // --------------------------------
+   
     // CLEAR
-    // --------------------------------
+   
     const handleClearFilters = () => {
         setSearchInput("");
         setSearchTerm("");
@@ -198,19 +198,19 @@ export default function Shop() {
     };
 
     return (
-        <section className="py-6">
+        <section className="py-1">
             <Container>
 
                 {/* Header */}
-                <div className="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="hidden md:flex mb-3 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
                     <div className="flex justify-between gap-3">
 
-                        <h1 className="text-3xl font-bold">
+                        <h1 className="text-2xl font-bold">
                             Shop Plants
                         </h1>
 
-                        <p className="mt-2 text-gray-500">
+                        <p className="mt-1.5 text-gray-500">
                             Showing{" "}
                             {totalProducts}{" "}
                             {totalProducts === 1
@@ -243,7 +243,7 @@ export default function Shop() {
                 </div>
 
                 {/* Search */}
-                <div className="mb-6">
+                <div className="mb-4">
 
                     <SearchBar
                         searchTerm={searchInput}

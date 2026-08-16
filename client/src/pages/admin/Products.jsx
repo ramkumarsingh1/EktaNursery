@@ -6,6 +6,7 @@ import {
     getAllProducts,
     deleteProduct,
 } from "../../api/productApi";
+import toast from "react-hot-toast";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -36,10 +37,10 @@ export default function Products() {
             // Refresh product list
             fetchProducts();
 
-            alert("Product deleted successfully.");
+            toast.success("Product deleted successfully.");
         } catch (error) {
             console.error(error);
-            alert("Failed to delete product.");
+            toast.error("Failed to delete product.");
         }
     };
 

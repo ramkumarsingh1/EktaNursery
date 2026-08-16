@@ -11,28 +11,29 @@ export default function ProductInfo({
     return (
         <div>
 
-            {/* Category */}
-            <p className="font-semibold text-green-700">
-                {product.category}
-            </p>
+            {/* Category + Rating */}
+            <div className="flex items-start justify-between gap-4">
+                <p className="font-semibold text-green-700">
+                    {product.category}
+                </p>
 
-            {/* Name + Rating */}
+                <div className="whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
+                    ⭐ {product.rating}
+                </div>
+            </div>
+
+            {/* Name + Pricing */}
             <div className="mt-2 flex items-start justify-between gap-4">
 
                 <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
                     {product.name}
                 </h1>
 
-                <div className="whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
-                    ⭐ {product.rating}
-                </div>
-
+                <p className=" text-2xl font-bold text-green-700">
+                    ₹{product.price}
+                </p>
             </div>
 
-            {/* Price */}
-            <p className="mt-3 text-3xl font-bold text-green-700">
-                ₹{product.price}
-            </p>
 
             {/* Quantity */}
             <div className="mt-6 flex items-center justify-between rounded-xl border p-4">
@@ -85,10 +86,10 @@ export default function ProductInfo({
 
             {/* Add to Cart */}
             <Button
-                
-                onClick={() =>dispatch(addToCart({...product,quantity,})
-                    )
-                } 
+
+                onClick={() => dispatch(addToCart({ ...product, quantity, })
+                )
+                }
                 className="mt-5 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800"
             >
                 Add To Cart
