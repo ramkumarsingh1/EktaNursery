@@ -40,7 +40,7 @@ export default function ProductInfo({
 
 
             {/* Quantity */}
-            <div className="mt-3 flex items-center justify-between border-y py-2.5 sm:mt-5 sm:rounded-lg sm:border sm:p-3">
+            <div className="mt-1 flex items-center justify-between border-y py-1.5 sm:mt-5 sm:rounded-lg sm:border sm:p-3">
 
                 <span className="text-xs font-semibold sm:text-sm">
                     Quantity
@@ -77,7 +77,7 @@ export default function ProductInfo({
 
 
             {/* Total */}
-            <div className="mt-2 flex items-center justify-between">
+            <div className="mt-1 flex items-center justify-between">
 
                 <span className="text-xs font-semibold sm:text-sm">
                     Total
@@ -100,7 +100,7 @@ export default function ProductInfo({
                         })
                     )
                 }
-                className="mt-3 h-10 w-full rounded-md bg-green-700 text-xs font-semibold text-white hover:bg-green-800 sm:mt-4 sm:h-11 sm:rounded-lg sm:text-sm"
+                className="mt-2 h-10 w-full rounded-md bg-green-700 text-xs font-semibold text-white hover:bg-green-800 sm:mt-4 sm:h-11 sm:rounded-lg sm:text-sm"
             >
                 Add To Cart
             </Button>
