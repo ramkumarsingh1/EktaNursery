@@ -1,6 +1,7 @@
 import Button from "../ui/Button";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
+
 export default function ProductInfo({
     product,
     quantity,
@@ -8,53 +9,56 @@ export default function ProductInfo({
     totalPrice,
 }) {
     const dispatch = useDispatch();
+
     return (
-        <div>
+        <div className="text-gray-800">
 
             {/* Category + Rating */}
-            <div className="flex items-start justify-between gap-4">
-                <p className="text-sm font-medium md:font-semibold text-green-700">
+            <div className="flex items-center justify-between">
+
+                <p className="text-[11px] font-medium text-green-700 sm:text-sm">
                     {product.category}
                 </p>
 
-                <div className="whitespace-nowrap rounded-full bg-yellow-100 px-3 py-1 text-sm font-semibold text-yellow-700">
-                    ⭐ {product.rating}
-                </div>
+                <span className="rounded bg-yellow-100 px-1.5 py-0.5 text-[10px] font-semibold text-yellow-700 sm:px-2 sm:py-1 sm:text-xs">
+                    ⭐ {product.rating || 0}
+                </span>
+
             </div>
 
-            {/* Name + Pricing */}
-            <div className="mt-2 flex items-start justify-between gap-4">
 
-                <h1 className="text-sm font-bold sm:text-3xl lg:text-4xl">
-                    {product.name}
-                </h1>
+            {/* Product Name */}
+            <h1 className="mt-1 text-base font-semibold leading-5 sm:text-2xl sm:leading-7">
+                {product.name}
+            </h1>
 
-                <p className=" text-base font-bold text-green-700">
-                    ₹{product.price}
-                </p>
-            </div>
+
+            {/* Price */}
+            <p className="mt-1 text-lg font-bold text-green-700 sm:text-2xl">
+                ₹{product.price}
+            </p>
 
 
             {/* Quantity */}
-            <div className="mt-4 flex items-center justify-between rounded-xl border p-4">
+            <div className="mt-3 flex items-center justify-between border-y py-2.5 sm:mt-5 sm:rounded-lg sm:border sm:p-3">
 
-                <h3 className="font-semibold">
+                <span className="text-xs font-semibold sm:text-sm">
                     Quantity
-                </h3>
+                </span>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center">
 
                     <Button
                         onClick={() =>
                             quantity > 1 &&
                             setQuantity(quantity - 1)
                         }
-                        className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300"
+                        className="flex h-7 w-7 items-center justify-center rounded bg-gray-200 text-sm hover:bg-gray-300 sm:h-9 sm:w-9"
                     >
-                        -
+                        −
                     </Button>
 
-                    <span className="w-8 text-center text-lg font-bold">
+                    <span className="w-8 text-center text-sm font-semibold sm:text-base">
                         {quantity}
                     </span>
 
@@ -62,7 +66,7 @@ export default function ProductInfo({
                         onClick={() =>
                             setQuantity(quantity + 1)
                         }
-                        className="h-10 w-10 rounded-lg bg-gray-200 hover:bg-gray-300"
+                        className="flex h-7 w-7 items-center justify-center rounded bg-gray-200 text-sm hover:bg-gray-300 sm:h-9 sm:w-9"
                     >
                         +
                     </Button>
@@ -71,36 +75,40 @@ export default function ProductInfo({
 
             </div>
 
+
             {/* Total */}
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-2 flex items-center justify-between">
 
-                <h3 className="font-semibold">
+                <span className="text-xs font-semibold sm:text-sm">
                     Total
-                </h3>
+                </span>
 
-                <p className="text-sm md:text-2xl font-bold text-green-700">
+                <span className="text-base font-bold text-green-700 sm:text-xl">
                     ₹{totalPrice}
-                </p>
+                </span>
 
             </div>
 
-            {/* Add to Cart */}
-            <Button
 
-                onClick={() => dispatch(addToCart({ ...product, quantity, })
-                )
+            {/* Add To Cart */}
+            <Button
+                onClick={() =>
+                    dispatch(
+                        addToCart({
+                            ...product,
+                            quantity,
+                        })
+                    )
                 }
-                className="mt-4 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800"
+                className="mt-3 h-10 w-full rounded-md bg-green-700 text-xs font-semibold text-white hover:bg-green-800 sm:mt-4 sm:h-11 sm:rounded-lg sm:text-sm"
             >
                 Add To Cart
             </Button>
 
+
             {/* Description */}
-            <p className="mt-4 leading-5 text-gray-600">
-                Healthy nursery plant grown with proper care.
-                Suitable for homes, offices, balconies and gardens.
-                Easy to maintain and perfect for adding greenery
-                to your surroundings.
+            <p className="mt-3 text-xs leading-4 text-gray-500 sm:mt-5 sm:text-sm sm:leading-5">
+                {product.description}
             </p>
 
         </div>
