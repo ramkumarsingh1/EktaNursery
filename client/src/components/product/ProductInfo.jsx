@@ -13,7 +13,7 @@ export default function ProductInfo({
 
             {/* Category + Rating */}
             <div className="flex items-start justify-between gap-4">
-                <p className="font-semibold text-green-700">
+                <p className="text-sm font-medium md:font-semibold text-green-700">
                     {product.category}
                 </p>
 
@@ -25,18 +25,18 @@ export default function ProductInfo({
             {/* Name + Pricing */}
             <div className="mt-2 flex items-start justify-between gap-4">
 
-                <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
+                <h1 className="text-sm font-bold sm:text-3xl lg:text-4xl">
                     {product.name}
                 </h1>
 
-                <p className=" text-2xl font-bold text-green-700">
+                <p className=" text-base font-bold text-green-700">
                     ₹{product.price}
                 </p>
             </div>
 
 
             {/* Quantity */}
-            <div className="mt-6 flex items-center justify-between rounded-xl border p-4">
+            <div className="mt-4 flex items-center justify-between rounded-xl border p-4">
 
                 <h3 className="font-semibold">
                     Quantity
@@ -72,13 +72,13 @@ export default function ProductInfo({
             </div>
 
             {/* Total */}
-            <div className="mt-5 flex items-center justify-between">
+            <div className="mt-4 flex items-center justify-between">
 
                 <h3 className="font-semibold">
                     Total
                 </h3>
 
-                <p className="text-2xl font-bold text-green-700">
+                <p className="text-sm md:text-2xl font-bold text-green-700">
                     ₹{totalPrice}
                 </p>
 
@@ -90,13 +90,13 @@ export default function ProductInfo({
                 onClick={() => dispatch(addToCart({ ...product, quantity, })
                 )
                 }
-                className="mt-5 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800"
+                className="mt-4 w-full rounded-xl bg-green-700 py-4 text-white hover:bg-green-800"
             >
                 Add To Cart
             </Button>
 
             {/* Description */}
-            <p className="mt-6 leading-7 text-gray-600">
+            <p className="mt-4 leading-5 text-gray-600">
                 Healthy nursery plant grown with proper care.
                 Suitable for homes, offices, balconies and gardens.
                 Easy to maintain and perfect for adding greenery
