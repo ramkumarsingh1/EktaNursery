@@ -10,14 +10,14 @@ export default function Contact() {
     <div className="bg-gray-50">
 
       {/* Hero */}
-      <section className="bg-green-700 py-20 text-white">
-        <div className="mx-auto max-w-6xl px-6 text-center">
+      <section className="bg-green-700 py-8 text-white sm:py-16 lg:py-20">
+        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
 
-          <h1 className="text-5xl font-bold">
+          <h1 className="text-2xl font-bold sm:text-4xl lg:text-5xl">
             Contact Us
           </h1>
 
-          <p className="mt-5 text-lg text-green-100">
+          <p className="mt-3 text-sm text-green-100 sm:mt-4 sm:text-base lg:mt-5 lg:text-lg">
             We'd love to hear from you. Reach out anytime.
           </p>
 
@@ -25,105 +25,99 @@ export default function Contact() {
       </section>
 
       {/* Contact Section */}
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-14 lg:py-20">
 
-      <section className="mx-auto max-w-6xl px-6 py-20">
-
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-10">
 
           {/* Left */}
+          <div className="rounded-xl bg-white p-5 shadow-sm sm:p-6 lg:p-8">
 
-          <div className="rounded-xl bg-white p-8 shadow">
-
-            <h2 className="mb-8 text-3xl font-bold">
+            <h2 className="mb-4 text-2xl font-bold sm:mb-8 sm:text-3xl">
               Get In Touch
             </h2>
 
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
 
-              <div className="flex gap-4">
+              {/* Address */}
+              <div className="flex gap-3 sm:gap-4">
 
                 <FiMapPin
-                  className="mt-1 text-green-700"
-                  size={24}
+                  className="mt-1 shrink-0 text-green-700"
+                  size={21}
                 />
 
                 <div>
-
-                  <h3 className="font-semibold">
+                  <h3 className="text-sm font-semibold sm:text-base">
                     Address
                   </h3>
 
-                  <p className="text-gray-600">
-                    Patna, Bihar, India
+                  <p className="text-sm text-gray-600 sm:text-base">
+                    Siddharth Niketan, Sector 14, Ghaziabad, Uttar Pradesh, India
                   </p>
-
                 </div>
 
               </div>
 
-              <div className="flex gap-4">
+              {/* Phone */}
+              <div className="flex gap-3 sm:gap-4">
 
                 <FiPhone
-                  className="mt-1 text-green-700"
-                  size={24}
+                  className="mt-1 shrink-0 text-green-700"
+                  size={21}
                 />
 
                 <div>
-
-                  <h3 className="font-semibold">
+                  <h3 className="text-sm font-semibold sm:text-base">
                     Phone
                   </h3>
 
-                  <p className="text-gray-600">
+                  <p className="text-sm text-gray-600 sm:text-base">
                     +91 8340728392
                   </p>
-
                 </div>
 
               </div>
 
-              <div className="flex gap-4">
+              {/* Email */}
+              <div className="flex gap-3 sm:gap-4">
 
                 <FiMail
-                  className="mt-1 text-green-700"
-                  size={24}
+                  className="mt-1 shrink-0 text-green-700"
+                  size={21}
                 />
 
-                <div>
-
-                  <h3 className="font-semibold">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold sm:text-base">
                     Email
                   </h3>
 
-                  <p className="text-gray-600">
+                  <p className="break-all text-sm text-gray-600 sm:text-base">
                     support@ektanursery.com
                   </p>
-
                 </div>
 
               </div>
 
-              <div className="flex gap-4">
+              {/* Working Hours */}
+              <div className="flex gap-3 sm:gap-4">
 
                 <FiClock
-                  className="mt-1 text-green-700"
-                  size={24}
+                  className="mt-1 shrink-0 text-green-700"
+                  size={21}
                 />
 
                 <div>
-
-                  <h3 className="font-semibold">
+                  <h3 className="text-sm font-semibold sm:text-base">
                     Working Hours
                   </h3>
 
-                  <p className="text-gray-600">
-                    Monday - Saturday
+                  <p className="text-sm text-gray-600 sm:text-base">
+                    Monday - Sunday
                   </p>
 
-                  <p className="text-gray-600">
-                    9:00 AM - 7:00 PM
+                  <p className="text-sm text-gray-600 sm:text-base">
+                    9:00 AM - 8:00 PM
                   </p>
-
                 </div>
 
               </div>
@@ -133,41 +127,41 @@ export default function Contact() {
           </div>
 
           {/* Right */}
+          <div className="rounded-xl bg-white p-5 shadow-sm sm:p-6 lg:p-8">
 
-          <div className="rounded-xl bg-white p-8 shadow">
-
-            <h2 className="mb-8 text-3xl font-bold">
+            <h2 className="mb-4 text-2xl font-bold sm:mb-8 sm:text-3xl">
               Send Message
             </h2>
 
-            <form className="space-y-5">
+            <form className="space-y-4 sm:space-y-5">
 
               <input
                 type="text"
                 placeholder="Your Name"
-                className="w-full rounded-lg border p-3 outline-none focus:border-green-700"
+                className="w-full rounded-lg border p-2.5 text-sm outline-none focus:border-green-700 sm:p-3 sm:text-base"
               />
 
               <input
                 type="email"
                 placeholder="Your Email"
-                className="w-full rounded-lg border p-3 outline-none focus:border-green-700"
+                className="w-full rounded-lg border p-2.5 text-sm outline-none focus:border-green-700 sm:p-3 sm:text-base"
               />
 
               <input
                 type="text"
                 placeholder="Subject"
-                className="w-full rounded-lg border p-3 outline-none focus:border-green-700"
+                className="w-full rounded-lg border p-2.5 text-sm outline-none focus:border-green-700 sm:p-3 sm:text-base"
               />
 
               <textarea
-                rows="5"
+                rows="4"
                 placeholder="Your Message"
-                className="w-full rounded-lg border p-3 outline-none focus:border-green-700"
+                className="w-full rounded-lg border p-2.5 text-sm outline-none focus:border-green-700 sm:p-3 sm:text-base"
               ></textarea>
 
               <button
-                className="rounded-lg bg-green-700 px-8 py-3 text-white hover:bg-green-800"
+                type="submit"
+                className="rounded-lg bg-green-700 px-6 py-2.5 text-sm text-white transition hover:bg-green-800 sm:px-8 sm:py-3 sm:text-base"
               >
                 Send Message
               </button>
@@ -181,15 +175,14 @@ export default function Contact() {
       </section>
 
       {/* Google Map */}
-
-      <section className="mx-auto max-w-6xl px-6 pb-20">
+      <section className="mx-auto max-w-6xl px-4 pb-10 sm:px-6 sm:pb-14 lg:pb-20">
 
         <div className="overflow-hidden rounded-xl shadow">
 
           <iframe
             title="Google Map"
-            src="https://www.google.com/maps?q=Patna,Bihar&output=embed"
-            className="h-[400px] w-full border-0"
+            src="https://www.google.com/maps?q=Ekta Nursery,Siddharth Niketan sector 14, ghaziabad,UttarPradesh&output=embed"
+            className="h-[280px] w-full border-0 sm:h-[350px] lg:h-[400px]"
             loading="lazy"
           ></iframe>
 
