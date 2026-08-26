@@ -40,10 +40,38 @@ export default function Footer() {
 
                         <ul className="space-y-2 text-xs text-green-100 sm:text-sm">
 
-                            <li>Plants</li>
-                            <li>Pots</li>
-                            <li>Seeds</li>
-                            <li>Fertilizers</li>
+                            <li>
+                                <Link
+                                    to="/shop"
+                                    className="transition hover:text-white"
+                                >
+                                    Plants
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/shop"
+                                    className="transition hover:text-white"
+                                >
+                                    Pots
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/shop"
+                                    className="transition hover:text-white"
+                                >
+                                    Seeds
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/shop"
+                                    className="transition hover:text-white"
+                                >
+                                    Fertilizers
+                                </Link>
+                            </li>
 
                         </ul>
 
