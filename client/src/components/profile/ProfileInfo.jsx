@@ -173,10 +173,6 @@ export default function ProfileInfo() {
                 <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
                     Personal Information
                 </h2>
-
-                <p className="mt-1 text-sm text-gray-500">
-                    Update your personal details
-                </p>
             </div>
 
             {/* Form */}
