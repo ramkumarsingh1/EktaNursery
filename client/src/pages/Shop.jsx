@@ -51,7 +51,6 @@ export default function Shop() {
 
     const PRODUCTS_PER_PAGE = 6;
 
-
     //For Blocking the page Scrolling
     useEffect(()=>{
         if(isFilterOpen){
