@@ -166,18 +166,7 @@ export default function ProfileInfo() {
     };
 
     return (
-        <div className="rounded-xl bg-white p-4 shadow-sm sm:p-6">
-
-            {/* Header */}
-            <div className="mb-5 sm:mb-6">
-                <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
-                    Personal Information
-                </h2>
-            </div>
-
-            {/* Form */}
             <div className="space-y-4 sm:space-y-5">
-
                 {/* Name */}
                 <div>
                     <label className="mb-1.5 block text-sm font-medium text-gray-700">
@@ -284,7 +273,6 @@ export default function ProfileInfo() {
                 </button>
 
             </div>
-        </div>
     );
 }
 

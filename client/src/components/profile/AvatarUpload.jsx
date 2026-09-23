@@ -165,8 +165,6 @@ export default function AvatarUpload() {
     };
 
     return (
-        <div className="rounded-xl bg-white p-4 shadow-sm sm:p-6">
-            {/* Avatar Section */}
             <div className="flex flex-col items-center">
 
                 <div className="relative">
@@ -295,6 +293,5 @@ export default function AvatarUpload() {
 
             </div>
 
-        </div>
     );
 }
