@@ -166,18 +166,6 @@ export default function AvatarUpload() {
 
     return (
         <div className="rounded-xl bg-white p-4 shadow-sm sm:p-6">
-
-            {/* Header */}
-            <div className="mb-5 sm:mb-6">
-                <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
-                    Profile Picture
-                </h2>
-
-                <p className="mt-1 text-sm text-gray-500">
-                    Tap the camera icon to change your photo
-                </p>
-            </div>
-
             {/* Avatar Section */}
             <div className="flex flex-col items-center">
 
