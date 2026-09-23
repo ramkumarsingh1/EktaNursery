@@ -266,7 +266,7 @@ export default function AvatarUpload() {
                                 hover:bg-gray-100
                             "
                         >
-                            <FiX size={20} />
+                            <FiX size={25} />
                         </button>
 
                         {/* Save */}
@@ -287,7 +287,7 @@ export default function AvatarUpload() {
                                 hover:bg-green-800
                             "
                         >
-                            <FiCheck size={20} />
+                            <FiCheck size={25} />
                         </button>
 
                     </div>
