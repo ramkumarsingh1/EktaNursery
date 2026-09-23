@@ -59,7 +59,7 @@ export default function Shop() {
         }else{
             document.body.style.overflow ="";
         }
-    },[])
+    },[isFilterOpen])
 
   
     // SEARCH DEBOUNCE
