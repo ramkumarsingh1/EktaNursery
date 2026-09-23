@@ -51,6 +51,16 @@ export default function Shop() {
 
     const PRODUCTS_PER_PAGE = 6;
 
+
+    //For Blocking the page Scrolling
+    useEffect(()=>{
+        if(isFilterOpen){
+            document.body.style.overflow ="hidden";
+        }else{
+            document.body.style.overflow ="";
+        }
+    },[])
+
   
     // SEARCH DEBOUNCE
    
