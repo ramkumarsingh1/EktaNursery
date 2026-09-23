@@ -102,7 +102,12 @@
 
 
 import { useSelector, useDispatch } from "react-redux";
-import { FiUser, FiCamera, FiCheck, FiX } from "react-icons/fi";
+import {
+    FiUser,
+    FiCamera,
+    FiCheck,
+    FiX,
+} from "react-icons/fi";
 import { useState } from "react";
 import { updateAvatar } from "../../api/authApi";
 import { setUser } from "../../redux/auth/authSlice";
@@ -113,6 +118,7 @@ export default function AvatarUpload() {
     const [preview, setPreview] = useState(null);
 
     const dispatch = useDispatch();
+
     const { user } = useSelector((state) => state.auth);
 
     const handleAvatarChange = (e) => {
@@ -129,6 +135,7 @@ export default function AvatarUpload() {
 
         try {
             const formData = new FormData();
+
             formData.append("avatar", avatar);
 
             const { data } = await updateAvatar(formData);
@@ -158,28 +165,59 @@ export default function AvatarUpload() {
     };
 
     return (
-        <div className="rounded-2xl bg-white p-6 shadow-sm">
+        <div className="rounded-xl bg-white p-4 shadow-sm sm:p-6">
 
-            <h2 className="mb-6 text-xl font-semibold">
-                Profile Picture
-            </h2>
+            {/* Header */}
+            <div className="mb-5 sm:mb-6">
+                <h2 className="text-lg font-semibold text-gray-800 sm:text-xl">
+                    Profile Picture
+                </h2>
 
+                <p className="mt-1 text-sm text-gray-500">
+                    Tap the camera icon to change your photo
+                </p>
+            </div>
+
+            {/* Avatar Section */}
             <div className="flex flex-col items-center">
 
-                {/* Avatar */}
                 <div className="relative">
 
+                    {/* Avatar */}
                     {preview || user?.avatar?.url ? (
                         <img
                             src={preview || user?.avatar?.url}
-                            alt="Avatar"
-                            className="h-40 w-40 rounded-full object-cover"
+                            alt="Profile"
+                            className="
+                                h-32 w-32
+                                rounded-full
+                                object-cover
+                                ring-4 ring-white
+                                shadow-md
+                                sm:h-40 sm:w-40
+                            "
                         />
                     ) : (
-                        <div className="flex h-40 w-40 items-center justify-center rounded-full bg-green-100">
+                        <div
+                            className="
+                                flex
+                                h-32 w-32
+                                items-center justify-center
+                                rounded-full
+                                bg-green-100
+                                ring-4 ring-white
+                                shadow-md
+                                sm:h-40 sm:w-40
+                            "
+                        >
+                            <FiUser
+                                size={55}
+                                className="text-green-700 sm:hidden"
+                            />
+
                             <FiUser
                                 size={70}
-                                className="text-green-700"
+                                className="hidden text-green-700 sm:block"
                             />
                         </div>
                     )}
@@ -187,9 +225,25 @@ export default function AvatarUpload() {
                     {/* Camera Button */}
                     <label
                         htmlFor="avatar-upload"
-                        className="absolute bottom-2 right-2 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-700 text-white shadow-lg transition hover:bg-green-800"
+                        className="
+                            absolute
+                            bottom-0 right-0
+                            flex
+                            h-11 w-11
+                            cursor-pointer
+                            items-center justify-center
+                            rounded-full
+                            border-4 border-white
+                            bg-green-700
+                            text-white
+                            shadow-md
+                            transition
+                            active:scale-95
+                            hover:bg-green-800
+                            sm:h-12 sm:w-12
+                        "
                     >
-                        <FiCamera size={20} />
+                        <FiCamera size={19} />
 
                         <input
                             id="avatar-upload"
@@ -202,22 +256,48 @@ export default function AvatarUpload() {
 
                 </div>
 
-                {/* Save / Cancel after selecting */}
+                {/* Selected Image Actions */}
                 {avatar && (
-                    <div className="mt-4 flex gap-3">
+                    <div className="mt-5 flex items-center gap-4">
 
+                        {/* Cancel */}
                         <button
                             type="button"
                             onClick={cancelPreview}
-                            className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-300 text-gray-600 transition hover:bg-gray-100"
+                            aria-label="Cancel"
+                            className="
+                                flex
+                                h-11 w-11
+                                items-center justify-center
+                                rounded-full
+                                border
+                                border-gray-300
+                                text-gray-600
+                                transition
+                                active:scale-95
+                                hover:bg-gray-100
+                            "
                         >
                             <FiX size={20} />
                         </button>
 
+                        {/* Save */}
                         <button
                             type="button"
                             onClick={handleUpload}
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-green-700 text-white transition hover:bg-green-800"
+                            aria-label="Save profile picture"
+                            className="
+                                flex
+                                h-11 w-11
+                                items-center justify-center
+                                rounded-full
+                                bg-green-700
+                                text-white
+                                shadow-sm
+                                transition
+                                active:scale-95
+                                hover:bg-green-800
+                            "
                         >
                             <FiCheck size={20} />
                         </button>
@@ -226,6 +306,7 @@ export default function AvatarUpload() {
                 )}
 
             </div>
+
         </div>
     );
 }
