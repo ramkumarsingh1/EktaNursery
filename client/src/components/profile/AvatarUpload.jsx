@@ -51,45 +51,112 @@ export default function AvatarUpload() {
         }
     };
     return (
-        <div className="rounded-xl bg-white p-6 shadow">
+        // <div className="rounded-xl bg-white p-6 shadow">
 
-            <h2 className="mb-6 text-xl font-semibold">
+        //     <h2 className="mb-6 text-xl font-semibold">
+        //         Profile Picture
+        //     </h2>
+
+        //     <div className="flex flex-col items-center">
+
+        //         {preview || user?.avatar?.url ? (
+
+        //             <img
+        //                 src={preview || user?.avatar?.url}
+        //                 alt="Avatar"
+        //                 className="h-40 w-40 rounded-full border-4 border-green-600 object-cover"
+        //             />
+
+        //         ) : (
+
+        //             <div className="flex h-40 w-40 items-center justify-center rounded-full bg-green-100">
+        //                 <FiUser
+        //                     size={70}
+        //                     className="text-green-700"
+        //                 />
+        //             </div>
+
+        //         )}
+
+        //         <input
+        //             type="file"
+        //             accept="image/*"
+        //             onChange={handleAvatarChange}
+        //         />
+
+        //         <button
+        //             onClick={handleUpload}
+        //             className="mt-4 w-full rounded-lg bg-green-700 py-2 text-white hover:bg-green-800"
+        //         >
+        //             Upload Avatar
+        //         </button>
+
+        //     </div>
+
+        // </div>
+
+        <div className="rounded-2xl bg-white p-6 shadow-sm">
+
+            <h2 className="mb-6 text-xl font-semibold text-gray-800">
                 Profile Picture
             </h2>
 
             <div className="flex flex-col items-center">
 
-                {preview || user?.avatar?.url ? (
+                {/* Avatar */}
+                <div className="relative">
 
-                    <img
-                        src={preview || user?.avatar?.url}
-                        alt="Avatar"
-                        className="h-40 w-40 rounded-full border-4 border-green-600 object-cover"
-                    />
-
-                ) : (
-
-                    <div className="flex h-40 w-40 items-center justify-center rounded-full bg-green-100">
-                        <FiUser
-                            size={70}
-                            className="text-green-700"
+                    {preview || user?.avatar?.url ? (
+                        <img
+                            src={preview || user?.avatar?.url}
+                            alt="Avatar"
+                            className="h-40 w-40 rounded-full border-4 border-green-600 object-cover"
                         />
-                    </div>
+                    ) : (
+                        <div className="flex h-40 w-40 items-center justify-center rounded-full bg-green-100">
+                            <FiUser
+                                size={70}
+                                className="text-green-700"
+                            />
+                        </div>
+                    )}
 
-                )}
+                </div>
 
+                {/* Hidden File Input */}
                 <input
+                    id="avatar-upload"
                     type="file"
                     accept="image/*"
                     onChange={handleAvatarChange}
+                    className="hidden"
                 />
 
-                <button
-                    onClick={handleUpload}
-                    className="mt-4 w-full rounded-lg bg-green-700 py-2 text-white hover:bg-green-800"
+                {/* Choose Image Button */}
+                <label
+                    htmlFor="avatar-upload"
+                    className="mt-5 flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:border-green-600 hover:bg-green-50 hover:text-green-700"
                 >
-                    Upload Avatar
-                </button>
+                    <FiCamera size={18} />
+                    Choose Image
+                </label>
+
+                {/* Selected File */}
+                {avatar && (
+                    <p className="mt-2 max-w-[250px] truncate text-sm text-gray-500">
+                        {avatar.name}
+                    </p>
+                )}
+
+                {/* Upload */}
+                {avatar && (
+                    <button
+                        onClick={handleUpload}
+                        className="mt-4 w-full rounded-lg bg-green-700 py-2.5 font-medium text-white transition hover:bg-green-800"
+                    >
+                        Upload Avatar
+                    </button>
+                )}
 
             </div>
 
